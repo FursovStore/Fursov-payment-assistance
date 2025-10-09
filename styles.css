@@ -1,0 +1,948 @@
+﻿/* ============================================
+   DESIGN TOKENS (Fursov Palette)
+   ============================================ */
+:root {
+  /* Colors */
+  --color-main: #5464eb; /* primary outline/accent */
+  --color-two:  #5364ec; /* gradient mate */
+  --bg-main:    #121115; /* page background */
+  --bg-surface: #17161a; /* card surface */
+  --text:       #ffffff; /* primary text */
+  --muted:      #c7c7d1; /* secondary text */
+  --border:     #2a2a32; /* hairlines */
+  --ok:         #10b981;
+  --warn:       #f59e0b;
+  --error:      #ef4444;
+
+  /* Border Radius */
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+
+  /* Spacing */
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+
+  /* Shadows */
+  --shadow-1: 0 4px 12px rgba(0,0,0,.25);
+  --shadow-2: 0 12px 30px rgba(0,0,0,.35);
+
+  /* Animation */
+  --ease: cubic-bezier(.2,.6,.2,1);
+  --dur: 220ms;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+* { 
+  box-sizing: border-box; 
+}
+
+html, body { 
+  height: 100%; 
+}
+
+body {
+  position: relative;
+  margin: 0;
+  color: var(--text);
+  background: var(--bg-main);
+  font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Background glows - fixed to viewport corners */
+body::before {
+  content: "";
+  position: fixed;
+  top: -20vmax;
+  left: -20vmax;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side at 55% 45%, rgba(83,100,236,.26) 0%, rgba(83,100,236,.14) 55%, rgba(83,100,236,0) 100%);
+  filter: blur(24px);
+  will-change: transform;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  right: -20vmax;
+  bottom: -20vmax;
+  width: 58vmax;
+  height: 58vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side at 45% 55%, rgba(84,100,235,.22) 0%, rgba(84,100,235,.11) 52%, rgba(84,100,235,0) 100%);
+  filter: blur(26px);
+  will-change: transform;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.site-header, 
+main, 
+footer { 
+  position: relative; 
+  z-index: 1; 
+}
+
+img { 
+  max-width: 100%; 
+  height: auto; 
+}
+
+/* Thumbnails and lightbox */
+.img-thumb {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  border-radius: var(--radius-16);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-1);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  cursor: zoom-in;
+  margin: 8px auto;
+}
+
+.img-thumb:hover { transform: translateY(-1px); box-shadow: var(--shadow-2); }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.lightbox[aria-hidden="false"] { display: flex; }
+
+.lightbox__img {
+  max-width: min(92vw, 1100px);
+  max-height: 90vh;
+  border-radius: var(--radius-20);
+  outline: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+
+.lightbox__close {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: var(--radius-12);
+  border: 1px solid var(--border);
+  background: rgba(23,22,26,.8);
+  color: var(--text);
+  cursor: pointer;
+}
+
+a { 
+  color: inherit; 
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.site-header { 
+  display: grid; 
+  grid-template-columns: 1fr auto; 
+  align-items: center; 
+  gap: var(--space-16);
+  padding: var(--space-20);
+  background: linear-gradient(180deg, rgba(83,100,236,0.08), transparent 40%);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Expanded state slightly changes spacing */
+.site-header.is-expanded {
+  padding-bottom: calc(var(--space-20) - 4px);
+}
+
+.brand { 
+  display: flex; 
+  align-items: center; 
+  gap: var(--space-16); 
+}
+
+.brand__logo { 
+  height: 28px; 
+  width: auto; 
+}
+
+.brand__logos { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 10px; 
+}
+
+.brand__logo-chatgpt { 
+  width: 28px; 
+  height: 28px; 
+}
+
+.brand__label { 
+  color: #e9e9f2; 
+  font-weight: 700; 
+  font-size: 28px; 
+  letter-spacing: .2px; 
+}
+
+.v-sep { 
+  width: 6px; 
+  height: 26px; 
+  border-radius: 6px; 
+  background: rgba(255,255,255,.18); 
+  display: inline-block; 
+}
+
+.brand__title { 
+  font-size: 20px; 
+  line-height: 1.2; 
+  margin: 0; 
+}
+
+.brand__subtitle { 
+  margin: 2px 0 0; 
+  color: var(--muted); 
+  font-size: 14px; 
+}
+
+.brand__text { 
+  display: none; 
+}
+
+/* Header links */
+.links { 
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap; 
+  justify-content: flex-end; 
+}
+
+/* Ghost chip for toggle */
+.chip--ghost {
+  background: transparent;
+  border-color: rgba(84,100,235,.6);
+  color: #e9e9f2;
+}
+.chip--ghost:hover { border-color: #6a79f0; box-shadow: 0 10px 24px rgba(84,100,235,.18); }
+
+/* Smooth movement for chips */
+.chip { transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+
+/* Header categories panel */
+.header-cats {
+  grid-column: 1 / -1;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: max-height var(--dur) var(--ease), opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  border-top: 1px solid var(--border);
+}
+
+.site-header.is-expanded .header-cats {
+  max-height: 420px; /* sufficient for categories */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cats-inner { 
+  display: grid; 
+  gap: 14px; 
+  padding: 12px 0 6px; 
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+.cat { display: grid; gap: 8px; align-content: start; }
+.cat__title { margin: 0; font-size: 14px; color: var(--muted); font-weight: 700; letter-spacing: .2px; text-align: center; }
+.cat__items { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+
+/* Mobile layout: center brand and links */
+@media (max-width: 680px) {
+  .site-header { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .links { justify-content: center; }
+  /* Categories grid: 2 columns on first row, contact full width below */
+  .cats-inner { grid-template-columns: 1fr 1fr; grid-template-areas: 'sites bots' 'contact contact'; }
+  .cat--sites { grid-area: sites; }
+  .cat--bots { grid-area: bots; }
+  .cat--contact { grid-area: contact; }
+}
+
+.chip {
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 8px; 
+  padding: 8px 14px; 
+  border-radius: 12px; 
+  border: 2px solid #5464eb; 
+  background: linear-gradient(180deg, rgba(84,100,235,.12), rgba(83,100,236,.06)); 
+  color: #e9e9f2; 
+  box-shadow: 0 10px 24px rgba(84,100,235,.18); 
+  text-decoration: none; 
+}
+
+.chip:hover { 
+  border-color: #6a79f0; 
+  box-shadow: 0 14px 32px rgba(84,100,235,.28); 
+  text-decoration: none; 
+}
+
+.chip:focus, 
+.chip:focus-visible { 
+  text-decoration: none; 
+}
+
+.chip__icon { 
+  width: 16px; 
+  height: 16px; 
+  margin-right: 8px; 
+  border-radius: 3px; 
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+.container { 
+  padding: var(--space-20); 
+  display: grid; 
+  place-items: center; 
+}
+
+.cards { 
+  display: grid; 
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-20);
+  width: min(1200px, 100%);
+}
+
+@container style(--narrow: true) {}
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card {
+  position: relative;
+  background: linear-gradient(180deg, #19181d, #17161a);
+  border: 1px solid transparent;
+  border-radius: var(--radius-20);
+  padding: var(--space-20);
+  box-shadow: inset 0 0 0 1px var(--border), var(--shadow-1);
+  scroll-margin-top: 88px;
+  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(180deg, rgba(84,100,235,.55), rgba(83,100,236,.15));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.card:hover { 
+  box-shadow: var(--shadow-2); 
+  transform: translateY(-2px); 
+}
+
+.card:focus { 
+  outline: none; 
+}
+
+.card.is-highlighted::before {
+  /* Возвращаем анимированную градиентную рамку поверх базовой тонкой обводки */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px; /* как у обычной карточки */
+  background: linear-gradient(135deg, rgba(84,100,235,1), rgba(83,100,236,.45), rgba(84,100,235,1));
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: borderFlow 3s linear infinite; /* прежняя анимация */
+}
+
+.card.is-highlighted { 
+  /* Базовая тонкая обводка как у обычной карточки + свечение */
+  box-shadow:
+    inset 0 0 0 1px var(--border),
+    0 14px 32px rgba(84,100,235,.35),
+    0 18px 44px rgba(0,0,0,.48);
+  transform: translateY(-3px); 
+}
+
+.card.is-highlighted:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px var(--border),
+    0 14px 32px rgba(84,100,235,.35),
+    0 18px 44px rgba(0,0,0,.48);
+}
+
+.cards:has(.card.is-highlighted) .card { 
+  opacity: .72; 
+  filter: saturate(.9); 
+  transition: opacity var(--dur) var(--ease), filter var(--dur) var(--ease); 
+}
+
+.cards:has(.card.is-highlighted) .card.is-highlighted { 
+  opacity: 1; 
+  filter: none; 
+}
+
+@keyframes borderFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Card components */
+.card > header.card__header { 
+  display: none; 
+}
+
+.card__header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: var(--space-12); 
+  margin-bottom: var(--space-12); 
+}
+
+.card__title { 
+  margin: 0; 
+  font-size: 18px; 
+}
+
+.card__desc { 
+  color: var(--muted); 
+  margin: 0 0 var(--space-12); 
+}
+
+/* Card external headings */
+.card-head {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: flex-start; 
+  gap: 4px; 
+  margin: 2px 0 0; 
+  min-height: clamp(60px, 6.5vw, 90px); 
+}
+
+.card-head__title {
+  margin: 0; 
+  font-weight: 800; 
+  letter-spacing: .2px; 
+  font-size: 20px; 
+  background: linear-gradient(180deg, var(--color-main), var(--color-two)); 
+  -webkit-background-clip: text; 
+  background-clip: text; 
+  color: transparent; 
+  text-align: center; 
+}
+
+.card-head--center { 
+  justify-content: center; 
+}
+
+.card-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Badge */
+.badge { 
+  display: inline-flex; 
+  align-items: center; 
+  height: 24px; 
+  padding: 0 10px; 
+  border-radius: 999px; 
+  border: 2px solid rgba(84,100,235,.5);
+  background: linear-gradient(180deg, rgba(84,100,235,.18), rgba(83,100,236,.08));
+  color: #e9ebff; 
+  font-size: 12px;
+}
+
+.head-tag {
+  display: inline-flex; 
+  align-items: center; 
+  height: 34px; 
+  padding: 0 14px; 
+  border-radius: 999px; 
+  border: 2px solid rgba(84,100,235,.5); 
+  background: linear-gradient(180deg, rgba(84,100,235,.22), rgba(83,100,236,.12)); 
+  color: #e9ebff; 
+  font-weight: 700; 
+  text-decoration: none; 
+}
+
+.head-tag:hover { 
+  border-color: #6a79f0; 
+  text-decoration: none; 
+}
+
+/* Section title */
+.section-title {
+  margin: 18px 0 12px;
+  font-size: 18px;
+  color: #ffffff;
+  letter-spacing: .3px;
+  font-weight: 800;
+  text-transform: none;
+  text-align: center;
+  position: relative;
+}
+
+.section-title::before { 
+  display: none; 
+  content: none; 
+}
+
+/* Steps and actions */
+.steps { 
+  margin: 0 0 var(--space-16) 1.2em; 
+  padding: 0; 
+}
+
+.steps li { 
+  margin: 10px 0; 
+}
+
+.actions { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+  justify-content: center; 
+}
+
+.actions-inline { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 8px; 
+  margin-top: 8px; 
+  justify-content: center; 
+}
+
+/* Mobile page helper layout */
+.single-card-container {
+  padding: var(--space-20);
+  display: grid;
+  place-items: center;
+}
+
+.single-card { width: min(880px, 100%); }
+
+.divider { 
+  display: none; 
+}
+
+/* ============================================
+   FORMS & INPUTS
+   ============================================ */
+.kbd { 
+  background: #1f1e25; 
+  border: 1px solid #32313a; 
+  border-radius: 8px; 
+  padding: 2px 6px; 
+  font-size: 12px; 
+}
+
+.input { 
+  width: 100%; 
+  color: var(--text); 
+  background: #1c1b20; 
+  border: 1px solid var(--border);
+  border-radius: var(--radius-16); 
+  padding: 12px 14px; 
+  outline: none; 
+  transition: border-color var(--dur) var(--ease);
+}
+
+.input:focus-visible { 
+  border-color: var(--color-main); 
+  box-shadow: 0 0 0 3px rgba(84,100,235,.25); 
+}
+
+.input--area { 
+  resize: vertical; 
+  min-height: 120px; 
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn {
+  appearance: none; 
+  user-select: none; 
+  cursor: pointer;
+  border: 1px solid transparent; 
+  border-radius: var(--radius-16);
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 8px;
+  padding: 12px 16px; 
+  min-height: 44px; 
+  min-width: 44px; 
+  font-weight: 700; 
+  font-size: 15px; 
+  line-height: 1; 
+  text-decoration: none;
+  background: linear-gradient(180deg, var(--color-main), var(--color-two));
+  color: #ffffff; 
+  box-shadow: 0 10px 24px rgba(84,100,235,.28);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
+  vertical-align: middle;
+}
+
+.btn:hover { 
+  transform: translateY(-1px); 
+  box-shadow: 0 14px 32px rgba(84,100,235,.35); 
+}
+
+.btn:active { 
+  transform: translateY(0); 
+}
+
+.btn:focus-visible { 
+  outline: none; 
+  box-shadow: 0 0 0 3px rgba(84,100,235,.35), 0 0 0 8px rgba(84,100,235,.18); 
+}
+
+.btn[disabled] { 
+  opacity: .6; 
+  cursor: not-allowed; 
+}
+
+/* Button variants */
+.btn--secondary { 
+  background: linear-gradient(309deg, #2a2a36, #23222b); 
+  color: #ffffff; 
+  border: 2px solid #5464eb; 
+  box-shadow: 0 12px 28px rgba(0,0,0,.3); 
+}
+
+.btn--secondary:hover { 
+  box-shadow: 0 16px 36px rgba(0,0,0,.35); 
+}
+
+.btn--chatgpt { 
+  background: #74aa9c; 
+  color: #ffffff; 
+  border: 1px solid rgba(116,170,156,.6); 
+  box-shadow: 0 12px 28px rgba(116,170,156,.32); 
+}
+
+.btn--chatgpt:hover { 
+  box-shadow: 0 16px 36px rgba(116,170,156,.38); 
+}
+
+.btn--ghost { 
+  background: transparent; 
+  color: #e9e9f2; 
+  border: 1px solid var(--border);
+}
+
+/* Store badges */
+.store-badge { 
+  background: inherit; 
+  border: inherit; 
+  box-shadow: inherit; 
+  text-decoration: none; 
+}
+
+.store-badge:hover { 
+  text-decoration: none; 
+}
+
+.btn.store-badge { 
+  border-width: 2px; 
+  border-style: solid; 
+  border-color: rgba(255,255,255,.16); 
+}
+
+.btn.store-badge.store-badge--google { 
+  border-color: #34a853; 
+  box-shadow: 0 12px 28px rgba(52,168,83,.28); 
+}
+
+.btn.store-badge.store-badge--google:hover { 
+  box-shadow: 0 16px 36px rgba(52,168,83,.35); 
+}
+
+.btn.store-badge.store-badge--apple { 
+  border-color: #a3a3a3; 
+  background: #151518; 
+  box-shadow: 0 12px 28px rgba(163,163,163,.28); 
+}
+
+.btn.store-badge.store-badge--apple:hover { 
+  box-shadow: 0 16px 36px rgba(163,163,163,.36); 
+}
+
+/* ============================================
+   BUTTON ICONS - Индивидуальные настройки
+   ============================================ */
+
+/* ============================================
+   НАСТРОЙКИ РАЗМЕРОВ ДЛЯ КАЖДОЙ ИКОНКИ
+   Измените значения здесь для управления конкретной иконкой по всему сайту
+   ============================================ */
+:root {
+  /* Иконка закладки (Icon-bookmark-white.svg) */
+  --icon-bookmark-layout: 20px;
+  --icon-bookmark-scale: 1.35;
+
+  /* Логотип ChatGPT (Logo-ChatGPT-white.svg) */
+  --icon-chatgpt-layout: 22px;
+  --icon-chatgpt-scale: 1.3;
+
+  /* Логотип Fursov (Logo-Fursov-white.svg) */
+  --icon-fursov-layout: 28px;
+  --icon-fursov-scale: 1.0;
+
+  /* Иконка копирования (Icon-copytext-white.svg) */
+  --icon-copy-layout: 20px;
+  --icon-copy-scale: 1.7;
+
+  /* Логотип Telegram (Logo-Telegram.svg) */
+  --icon-telegram-layout: 20px;
+  --icon-telegram-scale: 1.3;
+
+  /* Иконка поиска (Icon-search-white.svg) */
+  --icon-search-layout: 20px;
+  --icon-search-scale: 1.2;
+
+  /* Иконка входа в аккаунт (image-Login-account-white.svg) */
+  --icon-login-layout: 20px;
+  --icon-login-scale: 1.4;
+
+  /* Google Play badge (image-GooglePlayAndroid.svg) */
+  --icon-googleplay-layout: 24px;
+  --icon-googleplay-scale: 1.3;
+
+  /* App Store badge (image-AppStoreiOS.svg) */
+  --icon-appstore-layout: 24px;
+  --icon-appstore-scale: 1.3;
+
+  /* Иконки чипов (favicon-*.png/ico) */
+  --icon-chip-layout: 16px;
+  --icon-chip-scale: 1.2;
+}
+
+/* ============================================
+   БАЗОВЫЙ СТИЛЬ ДЛЯ ВСЕХ ИКОНОК
+   ============================================ */
+.btn__icon { 
+  width: var(--current-icon-layout, 20px); 
+  height: var(--current-icon-layout, 20px); 
+  transform: scale(var(--current-icon-scale, 1.2)); 
+  transform-origin: center center;
+  margin-right: 8px; 
+  filter: drop-shadow(0 0 0 rgba(0,0,0,0)); 
+  flex-shrink: 0;
+}
+
+/* ============================================
+   ПРИМЕНЕНИЕ НАСТРОЕК К КОНКРЕТНЫМ ИКОНКАМ
+   (по атрибуту src)
+   ============================================ */
+
+/* Иконка закладки */
+img.btn__icon[src*="Icon-bookmark"] {
+  --current-icon-layout: var(--icon-bookmark-layout);
+  --current-icon-scale: var(--icon-bookmark-scale);
+}
+
+/* Логотип ChatGPT в кнопках */
+img.btn__icon[src*="Logo-ChatGPT"],
+img[src*="Logo-ChatGPT"].btn__icon {
+  --current-icon-layout: var(--icon-chatgpt-layout);
+  --current-icon-scale: var(--icon-chatgpt-scale);
+}
+
+/* Логотип ChatGPT в хедере */
+.brand__logo-chatgpt {
+  width: 28px;
+  height: 28px;
+}
+
+/* Логотип Fursov в хедере */
+.brand__logo {
+  height: var(--icon-fursov-layout);
+  width: auto;
+}
+
+/* Иконка входа в аккаунт */
+img.btn__icon[src*="Login-account"] {
+  --current-icon-layout: var(--icon-login-layout);
+  --current-icon-scale: var(--icon-login-scale);
+}
+
+/* Google Play badge */
+img.btn__icon[src*="GooglePlay"],
+.store-badge--google img.btn__icon {
+  --current-icon-layout: var(--icon-googleplay-layout);
+  --current-icon-scale: var(--icon-googleplay-scale);
+}
+
+/* App Store badge */
+img.btn__icon[src*="AppStore"],
+.store-badge--apple img.btn__icon {
+  --current-icon-layout: var(--icon-appstore-layout);
+  --current-icon-scale: var(--icon-appstore-scale);
+}
+
+/* Иконки в чипах */
+.chip__icon {
+  width: var(--icon-chip-layout);
+  height: var(--icon-chip-layout);
+  transform: scale(var(--icon-chip-scale));
+  margin-right: 8px;
+  border-radius: 3px;
+}
+
+/* ============================================
+   ПСЕВДОЭЛЕМЕНТЫ (иконки через CSS)
+   ============================================ */
+
+/* Иконки копирования */
+button[data-action="copy-bookmarklet"]::before,
+button[data-action="copy-console"]::before,
+button[data-action="copy-token"]::before,
+button[data-action="copy-api-code"]::before {
+  content: "";
+  width: var(--icon-copy-layout); 
+  height: var(--icon-copy-layout); 
+  display: inline-block; 
+  margin-right: 8px;
+  background: url("image/Icon-copytext-white.svg") center/contain no-repeat;
+  transform: scale(var(--icon-copy-scale));
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+/* Иконки Telegram */
+a.btn[href*="t.me"]::before,
+button[data-action="send-to-manager"]::before {
+  content: "";
+  width: var(--icon-telegram-layout); 
+  height: var(--icon-telegram-layout); 
+  display: inline-block; 
+  margin-right: 8px;
+  background: url("image/Logo-Telegram.svg") center/contain no-repeat;
+  transform: scale(var(--icon-telegram-scale));
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+/* Иконка поиска */
+button[data-action="parse-json"]::before {
+  content: "";
+  width: var(--icon-search-layout); 
+  height: var(--icon-search-layout); 
+  display: inline-block; 
+  margin-right: 8px;
+  background: url("image/Icon-search-white.svg") center/contain no-repeat;
+  transform: scale(var(--icon-search-scale));
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   МОДИФИКАТОРЫ КНОПОК (для обратной совместимости)
+   ============================================ */
+.btn--icon-lg { 
+  /* Эти классы теперь просто маркеры, размер определяется иконкой */
+}
+
+.btn--icon-xl { 
+  /* Эти классы теперь просто маркеры, размер определяется иконкой */
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.site-footer { 
+  padding: var(--space-20); 
+  border-top: 1px solid var(--border); 
+  color: var(--muted); 
+}
+
+.site-footer .meta { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+}
+
+/* ============================================
+   TOASTS
+   ============================================ */
+.toasts { 
+  position: fixed; 
+  bottom: 16px; 
+  right: 16px; 
+  display: grid; 
+  gap: 8px; 
+  z-index: 1000; 
+}
+
+.toast { 
+  background: #1e1d24; 
+  color: var(--text); 
+  border: 1px solid var(--border);
+  padding: 10px 12px; 
+  border-radius: 12px; 
+  box-shadow: var(--shadow-1);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 980px) { 
+  .cards { 
+    grid-template-columns: 1fr; 
+  } 
+}
+
+@media (max-width: 520px) {
+  /* Keep logos in one horizontal row with vertical separator, centered */
+  .brand__logos { display: inline-flex; align-items: center; gap: 10px; }
+  .brand__logo, .brand__logo-chatgpt { height: 24px; }
+  .brand__label { font-size: 18px; }
+  .v-sep { width: 6px; height: 24px; margin: 0 4px; border-radius: 6px; background: rgba(255,255,255,.18); }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  * { 
+    transition: none !important; 
+    animation: none !important; 
+  }
+}

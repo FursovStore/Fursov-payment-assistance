@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Мобильная инструкция — Stripe ссылка для ChatGPT (Android/iOS)</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-fursovstore.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="single-card-container">
+    <div class="single-card card-group">
+      <div class="card-head">
+        <h2 class="card-head__title">Мобильная инструкция: получение Stripe‑ссылки (Android/iOS)</h2>
+        <span class="badge">Упрощённая версия</span>
+      </div>
+      <section class="card" tabindex="-1" aria-label="Шаги инструкции для мобильных устройств">
+        <ol class="steps">
+          <li>
+            Установите нужный браузер/инструмент:
+            <div class="actions-inline">
+              <a class="btn store-badge store-badge--google" href="https://play.google.com/store/apps/details?id=com.kiwibrowser.browser" target="_blank" rel="noopener">
+                <img class="btn__icon" src="image/Icon-Google_Play_Android.svg" alt="Google Play" />
+                Google Play (Kiwi)
+              </a>
+              <a class="btn store-badge store-badge--apple" href="https://apps.apple.com/ru/app/web-inspector/id1584825745" target="_blank" rel="noopener">
+                <img class="btn__icon" src="image/Icon-App_Store_iOS.svg" alt="App Store" />
+                App Store (Web Inspector)
+              </a>
+            </div>
+          </li>
+          <li>Запустите приложение (Kiwi или Web Inspector).</li>
+          <li>
+            Откройте сайт ChatGPT
+            <div class="actions-inline">
+              <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com" target="_blank" rel="noopener">
+                <img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть ChatGPT
+              </a>
+            </div>
+          </li>
+          <li>
+            Авторизуйтесь в аккаунте ChatGPT
+            <div class="actions-inline">
+              <a class="btn btn--secondary" href="https://auth.openai.com/log-in-or-create-account" target="_blank" rel="noopener">
+                <img class="btn__icon" src="image/Icon-Login-account-white.svg" alt="Войти" />Войти в аккаунт
+              </a>
+            </div>
+          </li>
+          <li>
+            После входа в аккаунт ChatGPT — скопируйте код для консоли
+            <div class="actions-inline">
+              <button class="btn" data-action="copy-console">Скопировать код для консоли</button>
+            </div>
+          </li>
+          <li>
+            Нажимаем на «три точки», нажимаем «Инструменты разработчика»
+            <img class="img-thumb" src="image/mobileImage_var2/1.jpg" alt="Открыть инструменты разработчика" data-full="image/mobileImage_var2/1.jpg" />
+          </li>
+          <li>
+            В открывшемся окне, открываем вкладку «Console»
+            <img class="img-thumb" src="image/mobileImage_var2/2.jpg" alt="Вкладка Console" data-full="image/mobileImage_var2/2.jpg" />
+          </li>
+          <li>
+            Вставьте скопированный код в консоль и подтвердите отправку (~два раза "enter" на клавиатуре)
+            <img class="img-thumb" src="image/mobileImage_var2/3.jpg" alt="Вставка кода в консоль" data-full="image/mobileImage_var2/3.jpg" />
+          </li>
+          <li>
+            Через ~10 секунд в консоли появится ссылка
+            <img class="img-thumb" src="image/mobileImage_var2/4.jpg" alt="Ссылка Stripe в консоли" data-full="image/mobileImage_var2/4.jpg" />
+          </li>
+          <li>
+            Скопируйте ссылку и отправьте менеджеру. Кнопка ниже — контакты менеджера
+            <div class="actions-inline">
+              <a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Связаться с менеджером</a>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </div>
+
+    <!-- Lightbox for image preview -->
+    <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Просмотр изображения">
+      <button class="lightbox__close" type="button" aria-label="Закрыть (Esc)">Закрыть</button>
+      <img class="lightbox__img" alt="Превью шага" />
+    </div>
+  </main>
+
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="app.js"></script>
+  <script type="module">
+    // Lightweight image lightbox for thumbnails on this page
+    const lb = document.getElementById('lightbox');
+    const lbImg = lb.querySelector('.lightbox__img');
+    const lbClose = lb.querySelector('.lightbox__close');
+    function openLightbox(src, alt) {
+      lbImg.src = src;
+      lbImg.alt = alt || 'Превью шага';
+      lb.setAttribute('aria-hidden', 'false');
+      document.addEventListener('keydown', onEsc);
+    }
+    function closeLightbox() {
+      lb.setAttribute('aria-hidden', 'true');
+      lbImg.removeAttribute('src');
+      document.removeEventListener('keydown', onEsc);
+    }
+    function onEsc(e){ if(e.key === 'Escape') closeLightbox(); }
+    document.addEventListener('click', (e) => {
+      const thumb = e.target.closest('.img-thumb');
+      if (thumb) {
+        const src = thumb.getAttribute('data-full') || thumb.src;
+        openLightbox(src, thumb.alt);
+        return;
+      }
+      if (e.target === lb) closeLightbox();
+    });
+    lbClose.addEventListener('click', closeLightbox);
+  </script>
+</body>
+<!--
+  Notes:
+  - This page reuses global card styles to visually match index.html.
+  - Thumbnails are smaller and open in a lightbox for closer inspection.
+-->
+</html>
