@@ -60,9 +60,7 @@
             <div class="actions-inline">
               <a class="btn btn--icon-lg" data-bookmarklet href="#" draggable="true" title="Перетащите в панель закладок"><img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />Ссылка Stripe</a>
             </div>
-            <div class="actions-inline"><span class="note">Если панель закладок не видна — нажмите:
-              <br \><b>Ctrl + Shift + B или (f12)</b> — Windows
-              <br \><b>Cmd+Option+I</b> — MacOS.</span></div>
+            <div class="actions-inline"><span class="note">Если панель закладок не видна — нажмите: <b>Ctrl + Shift + B</b>
             <div class="actions-inline"><span class="note">Если перетаскивание не работает — используйте ручной способ ниже.</span></div>
           
           
@@ -113,7 +111,8 @@
               <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть ChatGPT</a>
             </div>
           </li>
-          <li><b>Откройте консоль</b>: нажмите <b>F12</b>
+          <li><b>Откройте консоль</b>: откройте DevTools:
+            <br /> нажмите <b>F12</b>
             <br /> (или <b>Ctrl+Shift+I</b>) ➡️ вкладка <b>Console</b>.</li>
           <li>
             <b>Вставьте код</b> в Console и нажмите Enter.
@@ -150,7 +149,7 @@
             <br />затем <b>Ctrl + C</b> — скопировать.
           </li>
           <li>
-            Вставьте весь скопированный текст в поле ниже и нажмите кнопку «Отправить менеджеру».
+            Вставьте весь скопированный текст в поле ниже и нажмите кнопку «Отправить менеджеру». К тексту будут добавлены знаки ``` для удобного копирования менеджером для дальнейшей работы.
             <div class="form" style="margin-top:10px">
               <label for="sessionJson" class="form__label">Вставьте API‑ответ JSON:</label>
               <textarea id="sessionJson" class="input input--area" rows="6" placeholder="{ &quot;accessToken&quot;: &quot;...&quot;, ... }"></textarea>
@@ -160,7 +159,7 @@
               <output id="sessionStatus" class="status" role="status" aria-live="polite"></output>
             </div>
             <div class="actions-inline">
-              <button class="btn" data-action="parse-json">Проверить JSON</button>
+              
               
               
             </div>
