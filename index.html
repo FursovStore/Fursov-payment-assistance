@@ -43,6 +43,7 @@
     </nav>
   </header>
 
+
   <main id="main" class="container" role="main">
     <section class="cards" aria-label="Инструкции по получению ссылки">
   <div class="card-group">
@@ -119,6 +120,11 @@
             <br /> нажмите <b>F12</b>
             <br /> (или <b>Ctrl+Shift+I</b>) ➡️ вкладка <b>Console</b>.</li>
           <li>
+            <b>Разрешите вставку кода</b>: Если появится предупреждение о защите от Self-XSS, вручную впишите в консоль:
+            <br /><code>allow pasting</code>
+            <br />и нажмите <b>Enter</b>. Это разрешит вставку кода в консоль.
+          </li>
+          <li>
             <b>Вставьте код</b> в Console и нажмите Enter.
             <br />В консоли появится ссылка
             <br /><code>https://checkout.stripe.com/...</code>
@@ -153,7 +159,7 @@
             <br />затем <b>Ctrl + C</b> — скопировать.
           </li>
           <li>
-            Вставьте весь скопированный текст в поле ниже и нажмите кнопку «Отправить менеджеру». К тексту будут добавлены знаки ``` для удобного копирования менеджером для дальнейшей работы.
+            Вставьте весь скопированный текст в поле ниже и нажмите кнопку «Отправить менеджеру». К тексту будут добавлены знаки ```
             <div class="form" style="margin-top:10px">
               <label for="sessionJson" class="form__label">Вставьте API‑ответ JSON:</label>
               <textarea id="sessionJson" class="input input--area" rows="6" placeholder="{ &quot;accessToken&quot;: &quot;...&quot;, ... }"></textarea>
@@ -174,7 +180,9 @@
 </section>
   </main>
 
+
   <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+
 
   <script type="module" src="app.js"></script>
 </body>
