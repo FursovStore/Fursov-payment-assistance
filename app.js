@@ -42,56 +42,136 @@ const BOOKMARKLET_PLUS = "javascript:(async()=>{try{const s=await fetch('/api/au
 const BOOKMARKLET_PRO = "javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Зайдите на chatgpt.com под своим аккаунтом и попробуйте снова');return}const plans=['chatgptpro','chatgptproplan'];let url=null;for(const plan of plans){const a={plan_name:plan,billing_details:{country:'US',currency:'USD'},promo_code:null,checkout_ui_mode:'redirect'};try{const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':'Bearer '+j.accessToken},body:JSON.stringify(a)});const d=await r.json();if(d?.url){url=d.url;break}}catch(e){continue}}if(!url){alert('Не удалось получить ссылку. Возможно включён новый метод оплаты.');return}prompt('Скопируйте ссылку на оплату (старого образца):',url)}catch(e){alert('Ошибка: '+(e&&e.message?e.message:e))}})();";
 
 // Console code - Plus plan
-const CONSOLE_CODE_PLUS = `const a = {
-  plan_name: 'chatgptplusplan',
-  billing_details: { country: 'US', currency: 'USD' },
-  promo_code: null,
-  checkout_ui_mode: 'redirect',
-};
-
-const authReq = await fetch('/api/auth/session', { credentials: 'include' });
-const authRes = await authReq.json();
-const authToken = authRes.accessToken;
-
-const res = await fetch('https://chatgpt.com/backend-api/payments/checkout', {
-  body: JSON.stringify(a),
-  method: 'POST',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json',
-    authorization: \`Bearer \${authToken}\`,
-  },
-});
-
-const data = await res.json();
-
-data.url;`;
+const CONSOLE_CODE_PLUS = `(async () => {
+  try {
+    console.log('🔄 Получение токена авторизации...');
+    
+    const authReq = await fetch('/api/auth/session', { credentials: 'include' });
+    if (!authReq.ok) throw new Error(\`Ошибка авторизации: \${authReq.status}\`);
+    
+    const authToken = (await authReq.json())?.accessToken;
+    if (!authToken) throw new Error('Токен не найден. Войдите в аккаунт');
+    
+    console.log('✅ Токен получен');
+    
+    const plans = ['chatgplus', 'chatgptplusplan'];
+    let checkoutUrl = null;
+    
+    for (const planName of plans) {
+      console.log(\`🔄 Попытка получить ссылку для плана: \${planName}...\`);
+      
+      try {
+        const res = await fetch('https://chatgpt.com/backend-api/payments/checkout', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: \`Bearer \${authToken}\`,
+          },
+          body: JSON.stringify({
+            plan_name: planName,
+            billing_details: { country: 'US', currency: 'USD' },
+            promo_code: null,
+            checkout_ui_mode: 'redirect',
+          }),
+        });
+        
+        if (!res.ok) {
+          console.warn(\`⚠️ План "\${planName}" не сработал: HTTP \${res.status}\`);
+          continue;
+        }
+        
+        const data = await res.json();
+        if (data?.url) {
+          checkoutUrl = data.url;
+          console.log(\`✅ Ссылка успешно получена для плана: \${planName}\`);
+          break;
+        }
+      } catch (err) {
+        console.warn(\`⚠️ Ошибка при запросе плана "\${planName}": \${err.message}\`);
+      }
+    }
+    
+    if (!checkoutUrl) throw new Error('Не удалось получить ссылку для всех планов');
+    
+    console.log('\\n\\n');
+    console.log('🎉 Ссылка на оплату:');
+    console.log(checkoutUrl);
+    console.log('\\n\\n');
+    
+    return checkoutUrl;
+    
+  } catch (error) {
+    console.error('❌ Произошла ошибка:', error.message || error);
+    throw error;
+  }
+})();`;
 
 // Console code - Pro plan
-const CONSOLE_CODE_PRO = `const a = {
-  plan_name: 'chatgptpro',
-  billing_details: { country: 'US', currency: 'USD' },
-  promo_code: null,
-  checkout_ui_mode: 'redirect',
-};
-
-const authReq = await fetch('/api/auth/session', { credentials: 'include' });
-const authRes = await authReq.json();
-const authToken = authRes.accessToken;
-
-const res = await fetch('https://chatgpt.com/backend-api/payments/checkout', {
-  body: JSON.stringify(a),
-  method: 'POST',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json',
-    authorization: \`Bearer \${authToken}\`,
-  },
-});
-
-const data = await res.json();
-
-data.url;`;
+const CONSOLE_CODE_PRO = `(async () => {
+  try {
+    console.log('🔄 Получение токена авторизации...');
+    
+    const authReq = await fetch('/api/auth/session', { credentials: 'include' });
+    if (!authReq.ok) throw new Error(\`Ошибка авторизации: \${authReq.status}\`);
+    
+    const authToken = (await authReq.json())?.accessToken;
+    if (!authToken) throw new Error('Токен не найден. Войдите в аккаунт');
+    
+    console.log('✅ Токен получен');
+    
+    const plans = ['chatgpro', 'chatgptpro'];
+    let checkoutUrl = null;
+    
+    for (const planName of plans) {
+      console.log(\`🔄 Попытка получить ссылку для плана: \${planName}...\`);
+      
+      try {
+        const res = await fetch('https://chatgpt.com/backend-api/payments/checkout', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: \`Bearer \${authToken}\`,
+          },
+          body: JSON.stringify({
+            plan_name: planName,
+            billing_details: { country: 'US', currency: 'USD' },
+            promo_code: null,
+            checkout_ui_mode: 'redirect',
+          }),
+        });
+        
+        if (!res.ok) {
+          console.warn(\`⚠️ План "\${planName}" не сработал: HTTP \${res.status}\`);
+          continue;
+        }
+        
+        const data = await res.json();
+        if (data?.url) {
+          checkoutUrl = data.url;
+          console.log(\`✅ Ссылка успешно получена для плана: \${planName}\`);
+          break;
+        }
+      } catch (err) {
+        console.warn(\`⚠️ Ошибка при запросе плана "\${planName}": \${err.message}\`);
+      }
+    }
+    
+    if (!checkoutUrl) throw new Error('Не удалось получить ссылку для всех планов');
+    
+    console.log('\\n\\n');
+    console.log('🎉 Ссылка на оплату:');
+    console.log(checkoutUrl);
+    console.log('\\n\\n');
+    
+    return checkoutUrl;
+    
+  } catch (error) {
+    console.error('❌ Произошла ошибка:', error.message || error);
+    throw error;
+  }
+})();`;
 
 // Hash highlight (#var1/#var2/#var3)
 function applyHashHighlight() {
@@ -327,4 +407,3 @@ function initHeaderEnhancements(header) {
   const header = await ensureHeader();
   if (header) initHeaderEnhancements(header);
 })();
-
