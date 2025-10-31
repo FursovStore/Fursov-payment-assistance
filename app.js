@@ -1,4 +1,4 @@
-﻿// App (ESM): clipboard, toasts, hash highlight, and actions per variants
+// App (ESM): clipboard, toasts, hash highlight, and actions per variants
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
@@ -35,21 +35,63 @@ async function writeClipboard(text) {
   }
 }
 
-// Bookmarklet code (as specified, with prompt)
-const BOOKMARKLET_SPEC = "javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Зайдите на chatgpt.com под своим аккаунтом и попробуйте снова');return}const a={plan_name:'chatgptplusplan',billing_details:{country:'US',currency:'USD'},promo_code:null,checkout_ui_mode:'redirect'};const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':'Bearer '+j.accessToken},body:JSON.stringify(a)});const d=await r.json();if(!d?.url){alert('Не удалось получить ссылку. Возможно включён новый метод оплаты.');return}prompt('Скопируйте ссылку на оплату (старого образца):',d.url);}catch(e){alert('Ошибка: '+(e&&e.message?e.message:e))}})();";
+// Bookmarklet code - Plus plan
+const BOOKMARKLET_PLUS = "javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Зайдите на chatgpt.com под своим аккаунтом и попробуйте снова');return}const a={plan_name:'chatgptplusplan',billing_details:{country:'US',currency:'USD'},promo_code:null,checkout_ui_mode:'redirect'};const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':'Bearer '+j.accessToken},body:JSON.stringify(a)});const d=await r.json();if(!d?.url){alert('Не удалось получить ссылку. Возможно включён новый метод оплаты.');return}prompt('Скопируйте ссылку на оплату (старого образца):',d.url);}catch(e){alert('Ошибка: '+(e&&e.message?e.message:e))}})();";
 
-// Console code: lazy-load from file
-let CONSOLE_CODE_CACHE = null;
-async function loadConsoleCode() {
-  if (CONSOLE_CODE_CACHE) return CONSOLE_CODE_CACHE;
-  try {
-    const res = await fetch('playcode-code-for-console.txt');
-    CONSOLE_CODE_CACHE = await res.text();
-  } catch {
-    CONSOLE_CODE_CACHE = '';
-  }
-  return CONSOLE_CODE_CACHE;
-}
+// Bookmarklet code - Pro plan
+const BOOKMARKLET_PRO = "javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Зайдите на chatgpt.com под своим аккаунтом и попробуйте снова');return}const a={plan_name:'chatgptpro',billing_details:{country:'US',currency:'USD'},promo_code:null,checkout_ui_mode:'redirect'};const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':'Bearer '+j.accessToken},body:JSON.stringify(a)});const d=await r.json();if(!d?.url){alert('Не удалось получить ссылку. Возможно включён новый метод оплаты.');return}prompt('Скопируйте ссылку на оплату (старого образца):',d.url);}catch(e){alert('Ошибка: '+(e&&e.message?e.message:e))}})();";
+
+// Console code - Plus plan
+const CONSOLE_CODE_PLUS = `const a = {
+  plan_name: 'chatgptplusplan',
+  billing_details: { country: 'US', currency: 'USD' },
+  promo_code: null,
+  checkout_ui_mode: 'redirect',
+};
+
+const authReq = await fetch('/api/auth/session', { credentials: 'include' });
+const authRes = await authReq.json();
+const authToken = authRes.accessToken;
+
+const res = await fetch('https://chatgpt.com/backend-api/payments/checkout', {
+  body: JSON.stringify(a),
+  method: 'POST',
+  credentials: 'include',
+  headers: {
+    'Content-Type': 'application/json',
+    authorization: \`Bearer \${authToken}\`,
+  },
+});
+
+const data = await res.json();
+
+data.url;`;
+
+// Console code - Pro plan
+const CONSOLE_CODE_PRO = `const a = {
+  plan_name: 'chatgptpro',
+  billing_details: { country: 'US', currency: 'USD' },
+  promo_code: null,
+  checkout_ui_mode: 'redirect',
+};
+
+const authReq = await fetch('/api/auth/session', { credentials: 'include' });
+const authRes = await authReq.json();
+const authToken = authRes.accessToken;
+
+const res = await fetch('https://chatgpt.com/backend-api/payments/checkout', {
+  body: JSON.stringify(a),
+  method: 'POST',
+  credentials: 'include',
+  headers: {
+    'Content-Type': 'application/json',
+    authorization: \`Bearer \${authToken}\`,
+  },
+});
+
+const data = await res.json();
+
+data.url;`;
 
 // Hash highlight (#var1/#var2/#var3)
 function applyHashHighlight() {
@@ -72,47 +114,6 @@ function applyHashHighlight() {
 }
 window.addEventListener('hashchange', applyHashHighlight);
 
-// Variant 3 helpers
-let lastToken = '';
-function parseSessionJson() {
-  const raw = $('#sessionJson').value.trim();
-  if (!raw) { $('#sessionStatus').textContent = 'Вставьте JSON из /api/auth/session'; return; }
-  try {
-    const obj = JSON.parse(raw);
-    const token = obj?.accessToken || '';
-    if (!token) throw new Error('accessToken не найден');
-    lastToken = token;
-    $('#sessionStatus').textContent = 'Токен найден и готов к использованию.';
-    $('[data-action="copy-token"]').disabled = false;
-    $('[data-action="copy-api-code"]').disabled = false;
-    toast('Токен найден');
-  } catch (e) {
-    lastToken = '';
-    $('#sessionStatus').textContent = 'Ошибка: ' + e.message;
-    $('[data-action="copy-token"]').disabled = true;
-    $('[data-action="copy-api-code"]').disabled = true;
-  }
-}
-
-function buildApiCodeFromToken(token) {
-  return `const a = {
-  plan_name: 'chatgptplusplan',
-  billing_details: { country: 'US', currency: 'USD' },
-  promo_code: null,
-  checkout_ui_mode: 'redirect'
-};
-
-const token = '${token}';
-const res = await fetch("https://chatgpt.com/backend-api/payments/checkout", {
-  body: JSON.stringify(a),
-  method: "POST",
-  credentials: "include",
-  headers: { "Content-Type": "application/json", "authorization": \`Bearer \${token}\` }
-});
-const data = await res.json();
-data.url;`;
-}
-
 // Click handlers
 function onClick(e) {
   const btn = e.target.closest('button, a');
@@ -123,32 +124,17 @@ function onClick(e) {
   e.preventDefault();
 
   switch (action) {
-    case 'copy-bookmarklet':
-      writeClipboard(BOOKMARKLET_SPEC).then(ok => toast(ok ? 'Код закладки скопирован' : 'Не удалось скопировать'));
+    case 'copy-bookmarklet-plus':
+      writeClipboard(BOOKMARKLET_PLUS).then(ok => toast(ok ? 'Код закладки Plus скопирован' : 'Не удалось скопировать'));
       break;
-    case 'copy-console':
-      loadConsoleCode()
-        .then(code => writeClipboard(code))
-        .then(ok => toast(ok ? 'Код для консоли скопирован' : 'Не удалось скопировать'));
+    case 'copy-bookmarklet-pro':
+      writeClipboard(BOOKMARKLET_PRO).then(ok => toast(ok ? 'Код закладки Pro скопирован' : 'Не удалось скопировать'));
       break;
-    case 'parse-json':
-      parseSessionJson();
+    case 'copy-console-plus':
+      writeClipboard(CONSOLE_CODE_PLUS).then(ok => toast(ok ? 'Код консоли Plus скопирован' : 'Не удалось скопировать'));
       break;
-    case 'clear-json':
-      $('#sessionJson').value = '';
-      lastToken = '';
-      $('#sessionStatus').textContent = '';
-      $('[data-action="copy-token"]').disabled = true;
-      $('[data-action="copy-api-code"]').disabled = true;
-      toast('Поле очищено');
-      break;
-    case 'copy-token':
-      if (!lastToken) return;
-      writeClipboard(lastToken).then(ok => toast(ok ? 'accessToken скопирован' : 'Не удалось скопировать'));
-      break;
-    case 'copy-api-code':
-      if (!lastToken) return;
-      writeClipboard(buildApiCodeFromToken(lastToken)).then(ok => toast(ok ? 'Код запроса скопирован' : 'Не удалось скопировать'));
+    case 'copy-console-pro':
+      writeClipboard(CONSOLE_CODE_PRO).then(ok => toast(ok ? 'Код консоли Pro скопирован' : 'Не удалось скопировать'));
       break;
     case 'send-to-manager': {
       const raw = $('#sessionJson').value.trim();
@@ -178,11 +164,15 @@ setInterval(() => {
   document.title = marquee;
 }, 350);
 
-// Inject bookmarklet href for drag-to-bookmarks link
+// Inject bookmarklet href for drag-to-bookmarks links
 (() => {
-  const link = document.querySelector('[data-bookmarklet]');
-  if (link) {
-    try { link.setAttribute('href', BOOKMARKLET_SPEC); } catch {}
+  const linkPlus = document.querySelector('[data-bookmarklet-plus]');
+  if (linkPlus) {
+    try { linkPlus.setAttribute('href', BOOKMARKLET_PLUS); } catch {}
+  }
+  const linkPro = document.querySelector('[data-bookmarklet-pro]');
+  if (linkPro) {
+    try { linkPro.setAttribute('href', BOOKMARKLET_PRO); } catch {}
   }
 })();
 
@@ -215,7 +205,7 @@ function initHeaderEnhancements(header) {
   toggle.setAttribute('data-action', 'toggle-header-cats');
   toggle.setAttribute('aria-expanded', 'false');
   toggle.setAttribute('aria-controls', 'headerCats');
-  toggle.textContent = 'Больше... 👀';
+  toggle.innerHTML = '<img class="chip__icon" src="image/Icon-More-white.svg" alt="" width="16" height="16" />Больше...';
   links.appendChild(toggle);
 
   // Build categories panel under header
@@ -272,7 +262,8 @@ function initHeaderEnhancements(header) {
       el.style.opacity = '0.6';
       // force reflow
       el.getBoundingClientRect();
-      el.style.transition = 'transform var(--dur) var(--ease), opacity var(--dur) var(--ease)';
+      // Use longer duration for smoother animation
+      el.style.transition = 'transform 400ms cubic-bezier(0.2, 0.6, 0.2, 1), opacity 400ms cubic-bezier(0.2, 0.6, 0.2, 1)';
       el.style.transform = 'translate(0,0)';
       el.style.opacity = '';
       el.addEventListener('transitionend', () => {
@@ -286,6 +277,7 @@ function initHeaderEnhancements(header) {
     if (expanded) return;
     expanded = true;
     header.classList.add('is-expanded');
+    toggle.classList.add('is-expanded');
     toggle.setAttribute('aria-expanded', 'true');
     cats.setAttribute('aria-hidden', 'false');
 
@@ -293,7 +285,9 @@ function initHeaderEnhancements(header) {
     const siteChips = Array.from(links.querySelectorAll('a.chip'));
     flipMove(siteChips, catSites, null);
 
-    if (!extraSiteAdded) {
+    // Add or ensure extra site is at the end
+    const extraInCat = catSites.querySelector('a.chip[href^="https://СменаРегионаСтим."]');
+    if (!extraInCat) {
       const extra = document.createElement('a');
       extra.className = 'chip';
       extra.href = 'https://СменаРегионаСтим.РФ';
@@ -309,10 +303,11 @@ function initHeaderEnhancements(header) {
     if (!expanded) return;
     expanded = false;
     header.classList.remove('is-expanded');
+    toggle.classList.remove('is-expanded');
     toggle.setAttribute('aria-expanded', 'false');
     cats.setAttribute('aria-hidden', 'true');
 
-    // Move chips back before toggle
+    // Move chips back before toggle (exclude the extra site)
     const siteChips = Array.from(catSites.querySelectorAll('a.chip'))
       .filter(a => !a.href.startsWith('https://СменаРегионаСтим.'));
     flipMove(siteChips, links, toggle);
@@ -320,6 +315,8 @@ function initHeaderEnhancements(header) {
     // Ensure the extra site remains only inside category
     const stray = links.querySelector('a.chip[href^="https://СменаРегионаСтим."]');
     if (stray) stray.remove();
+    
+    // Extra site stays in catSites at the end - no need to recreate
   }
 
   toggle.addEventListener('click', () => (expanded ? collapse() : expand()));
@@ -330,3 +327,4 @@ function initHeaderEnhancements(header) {
   const header = await ensureHeader();
   if (header) initHeaderEnhancements(header);
 })();
+
