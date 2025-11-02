@@ -138,45 +138,6 @@
         <p class="note">Если вместо Stripe‑ссылки появляется <code>https://chatgpt.com/checkout/...</code>, значит включён новый метод оплаты. В любом случае отправьте нам эту ссылку.</p>
       </article>
   </div>
-  <div class="card-group">
-    <div class="card-head card-head--center"><h2 class="card-head__title">Копирование ссылки (по API)</h2></div>
-    <article id="var3" class="card" tabindex="-1">
-        <header class="card__header">
-          <h2 class="card__title">Копирование ссылки (по API)</h2>
-        </header>
-        <p class="card__desc">Получение API‑ответа для дальнейшей покупки подписки менеджером.</p>
-        <ol class="steps">
-          <li><b>Откройте chatgpt.com</b> и выполните вход в свой аккаунт.</li>
-          <li>
-            Нажмите кнопку ниже, для открытия <code>chatgpt.com/api/auth/session</code>.
-            <div class="actions-inline">
-              <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com/api/auth/session" target="_blank" rel="noopener"><img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть страницу API ответа</a>
-            </div>
-          </li>
-          <li>
-            <b>Скопируйте весь длинный текст</b> на странице:
-            <br />Нажмите <b>Ctrl + A</b> — выделить всё;
-            <br />затем <b>Ctrl + C</b> — скопировать.
-          </li>
-          <li>
-            Вставьте весь скопированный текст в поле ниже и нажмите кнопку «Отправить менеджеру». К тексту будут добавлены знаки ```
-            <div class="form" style="margin-top:10px">
-              <label for="sessionJson" class="form__label">Вставьте API‑ответ JSON:</label>
-              <textarea id="sessionJson" class="input input--area" rows="6" placeholder="{ &quot;accessToken&quot;: &quot;...&quot;, ... }"></textarea>
-              <div class="actions-inline">
-                <button class="btn btn--secondary" data-action="send-to-manager">Открыть чат с менеджером</button>
-              </div>
-              <output id="sessionStatus" class="status" role="status" aria-live="polite"></output>
-            </div>
-            <div class="actions-inline">
-              
-              
-              
-            </div>
-          </li>
-        </ol>
-      </article>
-  </div>
 </section>
   </main>
 

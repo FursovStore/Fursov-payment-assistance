@@ -173,10 +173,10 @@ const CONSOLE_CODE_PRO = `(async () => {
   }
 })();`;
 
-// Hash highlight (#var1/#var2/#var3)
+// Hash highlight (#var1/#var2)
 function applyHashHighlight() {
   const h = (location.hash || '').toLowerCase();
-  const ids = ['#var1', '#var2', '#var3'];
+  const ids = ['#var1', '#var2'];
   $$('.card').forEach(el => el.classList.remove('is-highlighted'));
   const idx = ids.indexOf(h);
   const targetId = idx >= 0 ? ids[idx].slice(1) : null;
