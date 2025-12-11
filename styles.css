@@ -1,6 +1,4 @@
-﻿/* ============================================
-   DESIGN TOKENS (Fursov Palette)
-   ============================================ */
+﻿/* DESIGN TOKENS (Fursov Palette) */
 :root {
   /* Colors */
   --color-main: #5464eb; /* primary outline/accent */
@@ -35,9 +33,7 @@
   --dur: 220ms;
 }
 
-/* ============================================
-   BASE STYLES
-   ============================================ */
+/* BASE STYLES */
 * { 
   box-sizing: border-box; 
 }
@@ -152,9 +148,7 @@ a {
   color: inherit; 
 }
 
-/* ============================================
-   HEADER
-   ============================================ */
+/* HEADER */
 .site-header {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -398,9 +392,7 @@ a {
   flex-shrink: 0;
 }
 
-/* ============================================
-   LAYOUT
-   ============================================ */
+/* LAYOUT */
 .container { 
   padding: var(--space-20); 
   display: grid; 
@@ -417,9 +409,7 @@ a {
 
 @container style(--narrow: true) {}
 
-/* ============================================
-   CARDS
-   ============================================ */
+/* CARDS */
 .card {
   position: relative;
   background: linear-gradient(180deg, #19181d, #17161a);
@@ -646,9 +636,7 @@ a {
   display: none; 
 }
 
-/* ============================================
-   FORMS & INPUTS
-   ============================================ */
+/* FORMS & INPUTS */
 .kbd { 
   background: #1f1e25; 
   border: 1px solid #32313a; 
@@ -678,9 +666,7 @@ a {
   min-height: 120px; 
 }
 
-/* ============================================
-   BUTTONS
-   ============================================ */
+/* BUTTONS */
 .btn {
   appearance: none; 
   user-select: none; 
@@ -790,14 +776,11 @@ a {
   box-shadow: 0 16px 36px rgba(163,163,163,.36); 
 }
 
-/* ============================================
-   BUTTON ICONS - Индивидуальные настройки
-   ============================================ */
+/* BUTTON ICONS - Индивидуальные настройки */
 
-/* ============================================
-   НАСТРОЙКИ РАЗМЕРОВ ДЛЯ КАЖДОЙ ИКОНКИ
+/* НАСТРОЙКИ РАЗМЕРОВ ДЛЯ КАЖДОЙ ИКОНКИ
    Измените значения здесь для управления конкретной иконкой по всему сайту
-   ============================================ */
+    */
 :root {
   /* Иконка закладки (Icon-bookmark-white.svg) */
   --icon-bookmark-layout: 20px;
@@ -842,11 +825,17 @@ a {
   /* Иконка "Больше" (Icon-More-white.svg) */
   --icon-more-layout: 20px;
   --icon-more-scale: 1.2;
+
+  /* Логотип Android (Logo-Android.svg) */
+  --icon-android-layout: 25px;
+  --icon-android-scale: 1.0;
+
+  /* Логотип iOS (Logo-iOS-white.svg) */
+  --icon-ios-layout: 25px;
+  --icon-ios-scale: 1.0;
 }
 
-/* ============================================
-   БАЗОВЫЙ СТИЛЬ ДЛЯ ВСЕХ ИКОНОК
-   ============================================ */
+/* БАЗОВЫЙ СТИЛЬ ДЛЯ ВСЕХ ИКОНОК */
 .btn__icon { 
   width: var(--current-icon-layout, 20px); 
   height: var(--current-icon-layout, 20px); 
@@ -857,10 +846,9 @@ a {
   flex-shrink: 0;
 }
 
-/* ============================================
-   ПРИМЕНЕНИЕ НАСТРОЕК К КОНКРЕТНЫМ ИКОНКАМ
+/* ПРИМЕНЕНИЕ НАСТРОЕК К КОНКРЕТНЫМ ИКОНКАМ
    (по атрибуту src)
-   ============================================ */
+   */
 
 /* Иконка закладки */
 img.btn__icon[src*="Icon-bookmark"] {
@@ -923,9 +911,31 @@ img.btn__icon[src*="AppStore"],
   --current-chip-icon-scale: var(--icon-more-scale);
 }
 
-/* ============================================
-   ПСЕВДОЭЛЕМЕНТЫ (иконки через CSS)
-   ============================================ */
+/* Логотипы в тэге head-tag */
+.head-tag__icon {
+  width: var(--current-head-tag-icon-layout, 20px);
+  height: var(--current-head-tag-icon-layout, 20px);
+  transform: scale(var(--current-head-tag-icon-scale, 1.0));
+  transform-origin: center center;
+  margin-left: 6px;
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* Логотип Android в head-tag */
+.head-tag__icon[src*="Logo-Android"] {
+  --current-head-tag-icon-layout: var(--icon-android-layout);
+  --current-head-tag-icon-scale: var(--icon-android-scale);
+}
+
+/* Логотип iOS в head-tag */
+.head-tag__icon[src*="Logo-iOS"] {
+  --current-head-tag-icon-layout: var(--icon-ios-layout);
+  --current-head-tag-icon-scale: var(--icon-ios-scale);
+}
+
+/* ПСЕВДОЭЛЕМЕНТЫ (иконки через CSS) */
 
 /* Иконки копирования */
 button[data-action="copy-bookmarklet"]::before,
@@ -974,9 +984,7 @@ button[data-action="parse-json"]::before {
   flex-shrink: 0;
 }
 
-/* ============================================
-   МОДИФИКАТОРЫ КНОПОК (для обратной совместимости)
-   ============================================ */
+/* МОДИФИКАТОРЫ КНОПОК (для обратной совместимости) */
 .btn--icon-lg { 
   /* Эти классы теперь просто маркеры, размер определяется иконкой */
 }
@@ -985,9 +993,7 @@ button[data-action="parse-json"]::before {
   /* Эти классы теперь просто маркеры, размер определяется иконкой */
 }
 
-/* ============================================
-   FOOTER
-   ============================================ */
+/* FOOTER */
 .site-footer { 
   padding: var(--space-20); 
   border-top: 1px solid var(--border); 
@@ -1000,9 +1006,7 @@ button[data-action="parse-json"]::before {
   gap: 10px; 
 }
 
-/* ============================================
-   TOASTS
-   ============================================ */
+/* TOASTS */
 .toasts { 
   position: fixed; 
   bottom: 16px; 
@@ -1021,9 +1025,7 @@ button[data-action="parse-json"]::before {
   box-shadow: var(--shadow-1);
 }
 
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
+/* RESPONSIVE DESIGN */
 @media (max-width: 980px) {
   .cards {
     grid-template-columns: 1fr;
@@ -1046,9 +1048,7 @@ button[data-action="parse-json"]::before {
   .v-sep { width: 6px; height: 24px; margin: 0 4px; border-radius: 6px; background: rgba(255,255,255,.18); }
 }
 
-/* ============================================
-   ACCESSIBILITY
-   ============================================ */
+/* ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
   * { 
     transition: none !important; 
