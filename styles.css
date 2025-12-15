@@ -28,6 +28,12 @@
   --shadow-1: 0 4px 12px rgba(0,0,0,.25);
   --shadow-2: 0 12px 30px rgba(0,0,0,.35);
 
+  /* Z-index hierarchy */
+  --z-bg: 0;
+  --z-content: 1;
+  --z-lightbox: 1001;
+  --z-toasts: 1002;
+
   /* Animation */
   --ease: cubic-bezier(.2,.6,.2,1);
   --dur: 220ms;
@@ -118,7 +124,7 @@ img {
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: var(--z-lightbox);
 }
 
 .lightbox[aria-hidden="false"] { display: flex; }
@@ -402,7 +408,7 @@ a {
 .cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-20);
+  gap: clamp(20px, 4vw, 32px);
   width: min(1200px, 100%);
   justify-content: center;
 }
@@ -412,68 +418,102 @@ a {
 /* CARDS */
 .card {
   position: relative;
+  overflow: hidden;
   background: linear-gradient(180deg, #19181d, #17161a);
-  border: 1px solid transparent;
+  border: 3px solid transparent;
   border-radius: var(--radius-20);
   padding: var(--space-20);
-  box-shadow: inset 0 0 0 1px var(--border), var(--shadow-1);
+  box-shadow: var(--shadow-1);
   scroll-margin-top: 88px;
   transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  background-clip: padding-box;
 }
 
 .card::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border-radius: inherit;
-  padding: 3px;
-  background: linear-gradient(180deg, rgba(84,100,235,.55), rgba(83,100,236,.15));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  padding: 1.5px;
+  background: linear-gradient(180deg, rgba(84,100,235,.5), rgba(83,100,236,.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+  transition: opacity var(--dur) var(--ease);
 }
 
-.card:hover { 
-  box-shadow: var(--shadow-2); 
-  transform: translateY(-2px); 
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(84,100,235,.15), rgba(83,100,236,.05));
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
 }
 
-.card:focus { 
-  outline: none; 
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card:hover {
+  box-shadow:
+    var(--shadow-2),
+    0 0 20px rgba(84,100,235,.4),
+    0 0 40px rgba(84,100,235,.2);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.card:focus {
+  outline: none;
 }
 
 .card.is-highlighted::before {
-  /* Возвращаем анимированную градиентную рамку поверх базовой тонкой обводки */
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 3px; /* как у обычной карточки */
-  background: linear-gradient(135deg, rgba(84,100,235,1), rgba(83,100,236,.45), rgba(84,100,235,1));
-  background-size: 300% 300%;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  animation: borderFlow 3s linear infinite; /* прежняя анимация */
+  background: linear-gradient(135deg, rgba(84,100,235,.8), rgba(83,100,236,.5), rgba(84,100,235,.6));
+  opacity: 1;
+  animation: none;
 }
 
-.card.is-highlighted { 
-  /* Базовая тонкая обводка как у обычной карточки + свечение */
+.card.is-highlighted::after {
+  background: linear-gradient(135deg, rgba(84,100,235,.25), rgba(83,100,236,.12), rgba(84,100,235,.15));
+  opacity: 1;
+}
+
+.card.is-highlighted {
   box-shadow:
-    inset 0 0 0 1px var(--border),
     0 14px 32px rgba(84,100,235,.35),
-    0 18px 44px rgba(0,0,0,.48);
-  transform: translateY(-3px); 
+    0 18px 44px rgba(0,0,0,.48),
+    0 0 30px rgba(84,100,235,.5),
+    0 0 60px rgba(84,100,235,.3);
 }
 
 .card.is-highlighted:focus-visible {
   outline: none;
   box-shadow:
-    inset 0 0 0 1px var(--border),
     0 14px 32px rgba(84,100,235,.35),
-    0 18px 44px rgba(0,0,0,.48);
+    0 18px 44px rgba(0,0,0,.48),
+    0 0 30px rgba(84,100,235,.5),
+    0 0 60px rgba(84,100,235,.3);
 }
 
 .cards:has(.card.is-highlighted) .card { 
@@ -494,21 +534,17 @@ a {
 }
 
 /* Card components */
-.card > header.card__header { 
-  display: none; 
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  margin-bottom: var(--space-12);
 }
 
-.card__header { 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  gap: var(--space-12); 
-  margin-bottom: var(--space-12); 
-}
-
-.card__title { 
-  margin: 0; 
-  font-size: 18px; 
+.card__title {
+  margin: 0;
+  font-size: 18px;
 }
 
 .card__desc { 
@@ -518,67 +554,84 @@ a {
 
 /* Card external headings */
 .card-head {
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 4px; 
-  margin: 2px 0 0; 
-  min-height: clamp(60px, 6.5vw, 90px); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1vw, 8px);
+  padding: clamp(12px, 2vw, 16px) 0;
+  min-height: auto;
 }
 
 .card-head__title {
-  margin: 0; 
-  font-weight: 800; 
-  letter-spacing: .2px; 
-  font-size: 20px; 
-  background: linear-gradient(180deg, var(--color-main), var(--color-two)); 
-  -webkit-background-clip: text; 
-  background-clip: text; 
-  color: transparent; 
-  text-align: center; 
-}
-
-.card-head--center { 
-  justify-content: center; 
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: .2px;
+  font-size: 20px;
+  background: linear-gradient(180deg, var(--color-main), var(--color-two));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
 }
 
 .card-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: -8px;
+  gap: clamp(8px, 2.5vw, 16px);
+  margin-top: 0;
 }
 
 /* Badge */
-.badge { 
-  display: inline-flex; 
-  align-items: center; 
-  height: 24px; 
-  padding: 0 10px; 
-  border-radius: 999px; 
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
   border: 2px solid rgba(84,100,235,.5);
-  background: linear-gradient(180deg, rgba(84,100,235,.18), rgba(83,100,236,.08));
-  color: #e9ebff; 
-  font-size: 12px;
+  background: linear-gradient(180deg, rgba(84,100,235,.22), rgba(83,100,236,.12));
+  color: #e9ebff;
+  font-weight: 700;
+  font-size: 15px;
 }
 
 .head-tag {
-  display: inline-flex; 
-  align-items: center; 
-  height: 34px; 
-  padding: 0 14px; 
-  border-radius: 999px; 
-  border: 2px solid rgba(84,100,235,.5); 
-  background: linear-gradient(180deg, rgba(84,100,235,.22), rgba(83,100,236,.12)); 
-  color: #e9ebff; 
-  font-weight: 700; 
-  text-decoration: none; 
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(84,100,235,.5);
+  background: linear-gradient(180deg, rgba(84,100,235,.22), rgba(83,100,236,.12));
+  color: #e9ebff;
+  font-weight: 700;
+  text-decoration: none;
+  animation: pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.head-tag:hover { 
-  border-color: #6a79f0; 
-  text-decoration: none; 
+.head-tag:hover {
+  border-color: #6a79f0;
+  text-decoration: none;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(84,100,235,0.7),
+      0 0 0 8px rgba(84,100,235,0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 0 4px rgba(84,100,235,0.5),
+      0 0 0 12px rgba(84,100,235,0.1);
+  }
+  100% {
+    box-shadow:
+      0 0 0 8px rgba(84,100,235,0.3),
+      0 0 0 16px rgba(84,100,235,0);
+  }
 }
 
 /* Section title */
@@ -1007,13 +1060,13 @@ button[data-action="parse-json"]::before {
 }
 
 /* TOASTS */
-.toasts { 
-  position: fixed; 
-  bottom: 16px; 
-  right: 16px; 
-  display: grid; 
-  gap: 8px; 
-  z-index: 1000; 
+.toasts {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: grid;
+  gap: 8px;
+  z-index: var(--z-toasts);
 }
 
 .toast { 
@@ -1029,14 +1082,12 @@ button[data-action="parse-json"]::before {
 @media (max-width: 980px) {
   .cards {
     grid-template-columns: 1fr;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
   .card-group {
     width: 100%;
     max-width: 600px;
+    margin: 0 auto;
   }
 }
 
