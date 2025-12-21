@@ -69,6 +69,51 @@
   --line-height-tight: 1.2;
   --line-height-normal: 1.55;
 
+  /* Icon Sizes (for individual icon control) */
+  /* Иконка закладки (Icon-bookmark-white.svg) */
+  --icon-bookmark-layout: 20px;
+  --icon-bookmark-scale: 1.35;
+  /* Логотип ChatGPT (Logo-ChatGPT-white.svg) */
+  --icon-chatgpt-layout: 22px;
+  --icon-chatgpt-scale: 1.3;
+  /* Логотип Fursov (Logo-Fursov-white.svg) */
+  --icon-fursov-layout: 28px;
+  --icon-fursov-scale: 1.0;
+  /* Иконка копирования (Icon-copytext-white.svg) */
+  --icon-copy-layout: 20px;
+  --icon-copy-scale: 1.7;
+  /* Логотип Telegram (Logo-Telegram.svg) */
+  --icon-telegram-layout: 20px;
+  --icon-telegram-scale: 1.3;
+  /* Иконка поиска (Icon-search-white.svg) */
+  --icon-search-layout: 20px;
+  --icon-search-scale: 1.2;
+  /* Иконка входа в аккаунт (image-Login-account-white.svg) */
+  --icon-login-layout: 20px;
+  --icon-login-scale: 1.4;
+  /* Google Play badge (image-GooglePlayAndroid.svg) */
+  --icon-googleplay-layout: 24px;
+  --icon-googleplay-scale: 1.3;
+  /* App Store badge (image-AppStoreiOS.svg) */
+  --icon-appstore-layout: 24px;
+  --icon-appstore-scale: 1.3;
+  /* Иконки чипов (favicon-*.png/ico) */
+  --icon-chip-layout: 20px;
+  --icon-chip-scale: 1.2;
+  /* Иконка "Больше" (Icon-More-white.svg) */
+  --icon-more-layout: 20px;
+  --icon-more-scale: 1.2;
+  /* Логотип Android (Logo-Android.svg) */
+  --icon-android-layout: 25px;
+  --icon-android-scale: 1.0;
+  /* Логотип iOS (Logo-iOS-white.svg) */
+  --icon-ios-layout: 25px;
+  --icon-ios-scale: 1.0;
+  /* Иконка Mises Browser (favicon-mises.ico) */
+  --icon-mises-layout: 24px;
+  --icon-mises-scale: 1.0;
+}
+
 /* GLOBAL: Base Styles*/
 * {
   box-sizing: border-box;
@@ -908,48 +953,6 @@ a {
   flex-shrink: 0;
 }
 
-  /* Icon Sizes (for individual icon control) */
-   /* Иконка закладки (Icon-bookmark-white.svg) */
-  --icon-bookmark-layout: 20px;
-  --icon-bookmark-scale: 1.35;
-  /* Логотип ChatGPT (Logo-ChatGPT-white.svg) */
-  --icon-chatgpt-layout: 22px;
-  --icon-chatgpt-scale: 1.3;
-  /* Логотип Fursov (Logo-Fursov-white.svg) */
-  --icon-fursov-layout: 28px;
-  --icon-fursov-scale: 1.0;
-  /* Иконка копирования (Icon-copytext-white.svg) */
-  --icon-copy-layout: 20px;
-  --icon-copy-scale: 1.7;
-  /* Логотип Telegram (Logo-Telegram.svg) */
-  --icon-telegram-layout: 20px;
-  --icon-telegram-scale: 1.3;
-  /* Иконка поиска (Icon-search-white.svg) */
-  --icon-search-layout: 20px;
-  --icon-search-scale: 1.2;
-  /* Иконка входа в аккаунт (image-Login-account-white.svg) */
-  --icon-login-layout: 20px;
-  --icon-login-scale: 1.4;
-  /* Google Play badge (image-GooglePlayAndroid.svg) */
-  --icon-googleplay-layout: 24px;
-  --icon-googleplay-scale: 1.3;
-  /* App Store badge (image-AppStoreiOS.svg) */
-  --icon-appstore-layout: 24px;
-  --icon-appstore-scale: 1.3;
-  /* Иконки чипов (favicon-*.png/ico) */
-  --icon-chip-layout: 20px;
-  --icon-chip-scale: 1.2;
-  /* Иконка "Больше" (Icon-More-white.svg) */
-  --icon-more-layout: 20px;
-  --icon-more-scale: 1.2;
-  /* Логотип Android (Logo-Android.svg) */
-  --icon-android-layout: 25px;
-  --icon-android-scale: 1.0;
-  /* Логотип iOS (Logo-iOS-white.svg) */
-  --icon-ios-layout: 25px;
-  --icon-ios-scale: 1.0;
-}
-
 /* Icon-specific Styling */
 img.btn__icon[src*="Icon-bookmark"] {
   --current-icon-layout: var(--icon-bookmark-layout);
@@ -1113,24 +1116,74 @@ button[data-action="parse-json"]::before {
     max-width: 600px;
     margin: 0 auto;
   }
+
+  /* Улучшение отступов на планшетах */
+  .container {
+    padding: var(--space-16);
+  }
+
+  /* Адаптация размера шрифтов */
+  .card-head__title {
+    font-size: 19px;
+  }
+
+  .section-title {
+    font-size: 17px;
+  }
+
+  /* Адаптация чипов */
+  .chip {
+    font-size: 14px;
+    padding: var(--space-6) var(--space-12);
+  }
+
+  /* Адаптация кнопок */
+  .btn {
+    font-size: 14px;
+    padding: var(--space-10) var(--space-14);
+  }
 }
 
 /* RESPONSIVE DESIGN: Mobile */
 
 @media (max-width: 680px) {
+  /* Шапка сайта */
   .site-header {
     grid-template-columns: 1fr;
     justify-items: center;
     text-align: center;
+    gap: var(--space-16);
+    padding: var(--space-16) var(--space-12);
   }
 
+  .site-header.is-expanded {
+    padding-bottom: var(--space-12);
+  }
+
+  /* Навигационные ссылки */
   .links {
     justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-8);
   }
 
+  /* Уменьшение размера chips на мобильных */
+  .chip {
+    font-size: 14px;
+    padding: var(--space-8) var(--space-12);
+    min-height: 34px;
+  }
+
+  .chip__icon {
+    width: calc(var(--current-chip-icon-layout, var(--icon-chip-layout)) * 0.85);
+    height: calc(var(--current-chip-icon-layout, var(--icon-chip-layout)) * 0.85);
+  }
+
+  /* Категории товаров */
   .cats-inner {
     grid-template-columns: 1fr 1fr;
     grid-template-areas: "sites bots" "contact contact";
+    gap: var(--space-12);
   }
 
   .cat--sites {
@@ -1144,9 +1197,176 @@ button[data-action="parse-json"]::before {
   .cat--contact {
     grid-area: contact;
   }
+
+  /* Контейнер */
+  .container {
+    padding: var(--space-12);
+  }
+
+  /* Карточки */
+  .cards {
+    gap: var(--space-16);
+  }
+
+  .card {
+    padding: var(--space-16);
+    border-radius: var(--radius-lg);
+  }
+
+  .card-group {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .card-head {
+    min-height: auto;
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+    padding: clamp(12px, 2vw, 16px) 0;
+  }
+
+  .card-head__title {
+    font-size: 18px;
+  }
+
+  /* Заголовки секций */
+  .section-title {
+    font-size: 16px;
+    margin: 16px 0 10px;
+  }
+
+  /* Шаги инструкций */
+  .steps {
+    margin: 0 0 var(--space-14) 1em;
+    padding: 0;
+  }
+
+  .steps li {
+    font-size: 15px;
+    margin: 8px 0;
+  }
+
+  /* Действия и кнопки */
+  .actions,
+  .actions-inline {
+    flex-direction: wrap;
+    gap: var(--space-10);
+    justify-content: center;
+  }
+
+  .btn {
+    font-size: 15px;
+    padding: var(--space-12) var(--space-16);
+  }
+
+  .btn__icon {
+    width: calc(var(--current-icon-layout, 20px) * 0.9);
+    height: calc(var(--current-icon-layout, 20px) * 0.9);
+  }
+
+  /* Badge */
+  .badge {
+    font-size: 12px;
+    padding: var(--space-6) var(--space-10);
+    height: 30px;
+  }
+
+  /* Head tag */
+  .head-tag {
+    font-size: 13px;
+    padding: var(--space-6) var(--space-10);
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 30px;
+  }
+
+  .head-tag__icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Примечания */
+  .note {
+    font-size: 13px;
+  }
+
+  /* Code блоки */
+  code {
+    font-size: 13px;
+    padding: var(--space-4) var(--space-6);
+    word-break: break-all;
+  }
+
+  /* Разделитель */
+  .divider {
+    margin: var(--space-16) 0;
+    display: block;
+  }
+
+  /* Toasts */
+  .toasts {
+    left: var(--space-12);
+    right: var(--space-12);
+    bottom: var(--space-12);
+  }
+
+  .toast {
+    font-size: 14px;
+    padding: var(--space-8) var(--space-10);
+  }
+
+  /* Footer */
+  .site-footer {
+    padding: var(--space-16);
+    text-align: center;
+  }
+
+  .site-footer .meta {
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  /* Lightbox адаптация */
+  .lightbox__close {
+    top: var(--space-8);
+    right: var(--space-8);
+    font-size: 14px;
+    padding: var(--space-8) var(--space-12);
+  }
+
+  .lightbox__img {
+    max-width: 95vw;
+    max-height: 85vh;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Store badges */
+  .store-badge {
+    font-size: 14px;
+    padding: var(--space-10) var(--space-14);
+  }
+
+  /* Brand improvements for mobile */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    height: 100%;
+  }
+
+  .brand__title {
+    font-size: 20px;
+    line-height: var(--line-height-tight);
+  }
+
+  .brand__subtitle {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 520px) {
+  /* Брендинг - логотипы в одну линию */
   .brand__logos {
     display: inline-flex;
     align-items: center;
@@ -1162,12 +1382,207 @@ button[data-action="parse-json"]::before {
     font-size: 18px;
   }
 
+  .brand__title {
+    font-size: 19px;
+  }
+
+  .brand__subtitle {
+    font-size: 13px;
+  }
+
   .v-sep {
     width: 6px;
     height: 24px;
     margin: 0 var(--space-4);
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.18);
+  }
+
+  /* Дополнительные улучшения для очень узких экранов */
+  .site-header {
+    padding: var(--space-12) var(--space-8);
+    gap: var(--space-12);
+  }
+
+  .links {
+    gap: var(--space-6);
+  }
+
+  .container {
+    padding: var(--space-10) var(--space-8);
+  }
+
+  .card {
+    padding: var(--space-14);
+    border-radius: var(--radius-lg);
+  }
+
+  .card-head {
+    padding: clamp(10px, 1.5vw, 12px) 0;
+  }
+
+  .card-head__title {
+    font-size: 17px;
+  }
+
+  .card-group {
+    gap: clamp(6px, 2vw, 12px);
+  }
+
+  .section-title {
+    font-size: 15px;
+    margin: 14px 0 10px;
+  }
+
+  .steps {
+    margin: 0 0 var(--space-12) 1em;
+  }
+
+  .steps li {
+    font-size: 14px;
+    margin: 6px 0;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: var(--space-10) var(--space-14);
+    min-height: 40px;
+  }
+
+  .btn__icon {
+    width: calc(var(--current-icon-layout, 20px) * 0.85);
+    height: calc(var(--current-icon-layout, 20px) * 0.85);
+  }
+
+  /* Chips еще меньше */
+  .chip {
+    font-size: 13px;
+    padding: var(--space-6) var(--space-10);
+    min-height: 32px;
+  }
+
+  .chip__icon {
+    width: calc(var(--current-chip-icon-layout, var(--icon-chip-layout)) * 0.8);
+    height: calc(var(--current-chip-icon-layout, var(--icon-chip-layout)) * 0.8);
+  }
+
+  .badge {
+    font-size: 11px;
+    padding: var(--space-4) var(--space-8);
+    height: 28px;
+  }
+
+  .head-tag {
+    font-size: 12px;
+    padding: var(--space-4) var(--space-8);
+    height: 28px;
+  }
+
+  .head-tag__icon {
+    width: 16px;
+    height: 16px;
+    margin-left: var(--space-4);
+  }
+
+  .input {
+    padding: var(--space-10) var(--space-12);
+    font-size: 14px;
+  }
+
+  .actions {
+    gap: var(--space-8);
+  }
+
+  .actions-inline {
+    gap: var(--space-6);
+  }
+}
+
+@media (max-width: 400px) {
+  /* Экстремально узкие экраны (маленькие смартфоны) */
+  .site-header {
+    padding: var(--space-12) var(--space-8);
+  }
+
+  .brand__label {
+    font-size: 16px;
+  }
+
+  .brand__logo,
+  .brand__logo-chatgpt {
+    height: 20px;
+  }
+
+  .brand__title {
+    font-size: 18px;
+  }
+
+  .brand__subtitle {
+    font-size: 12px;
+  }
+
+  .v-sep {
+    height: 20px;
+  }
+
+  .card-head__title {
+    font-size: 16px;
+  }
+
+  .card {
+    padding: var(--space-12);
+    border-radius: var(--radius-lg);
+  }
+
+  .card-group {
+    width: 100%;
+    max-width: none;
+  }
+
+  .section-title {
+    font-size: 15px;
+    margin: 14px 0 10px;
+  }
+
+  /* Links перенос на несколько строк */
+  .links {
+    gap: var(--space-6);
+    justify-content: center;
+  }
+
+  .chip {
+    font-size: 12px;
+    padding: var(--space-6) var(--space-8);
+    min-height: 32px;
+  }
+
+  .chip__icon {
+    width: calc(var(--current-chip-icon-layout, var(--icon-chip-layout)) * 0.75);
+    height: calc(var(--current-chip-icon-layout, var(--icon-chip-layout)) * 0.75);
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: var(--space-10) var(--space-12);
+  }
+
+  .container {
+    padding: var(--space-8);
+  }
+
+  .cards {
+    gap: var(--space-12);
+  }
+
+  .toast {
+    font-size: 12px;
+    padding: var(--space-6) var(--space-8);
+  }
+
+  /* Store badges for extra small screens */
+  .store-badge {
+    font-size: 12px;
+    padding: var(--space-8) var(--space-10);
   }
 }
 

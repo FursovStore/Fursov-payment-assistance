@@ -6,75 +6,747 @@
   <title>Мобильная инструкция — Stripe ссылка для ChatGPT (Android/iOS)</title>
   <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-fursovstore.png" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Mobile Guide Specific Styles */
+    .platform-selector {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-20);
+      align-items: center;
+      padding: var(--space-24);
+    }
+
+    .platform-selector__title {
+      margin: 0 0 var(--space-16) 0;
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--text-primary);
+      letter-spacing: 0.3px;
+    }
+
+    .platform-buttons {
+      display: flex;
+      gap: var(--space-16);
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .platform-btn {
+      flex: 1;
+      min-width: 200px;
+      max-width: 280px;
+      padding: var(--space-24) var(--space-20);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-12);
+      background: linear-gradient(180deg, #19181d, var(--bg-surface));
+      border: 3px solid rgba(84, 100, 235, 0.5);
+      border-radius: var(--radius-xl);
+      cursor: pointer;
+      transition: all var(--dur-animation) var(--ease-bounce);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .platform-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.5px;
+      background: linear-gradient(180deg, rgba(84, 100, 235, 0.5), rgba(83, 100, 236, 0.2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.7;
+      transition: opacity var(--dur-fast) var(--ease-standard);
+    }
+
+    .platform-btn:hover {
+      transform: translateY(-4px);
+      border-color: rgba(84, 100, 235, 0.9);
+      box-shadow: 0 14px 32px rgba(84, 100, 235, 0.35), 0 0 30px rgba(84, 100, 235, 0.3);
+    }
+
+    .platform-btn:hover::before {
+      opacity: 1;
+    }
+
+    .platform-btn__icon {
+      width: 64px;
+      height: 64px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .platform-btn__label {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .platform-btn__desc {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Guide Container */
+    .guide-container {
+      display: none;
+      max-width: 100%;
+    }
+
+    .guide-container.is-active {
+      display: block;
+    }
+
+    /* Navigation Sidebar */
+    .guide-nav {
+      position: sticky;
+      top: 88px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-16);
+      margin-bottom: var(--space-20);
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    .guide-nav__title {
+      margin: 0 0 var(--space-12) 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .guide-nav__sections {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    .guide-nav__section {
+      cursor: pointer;
+      padding: var(--space-8) var(--space-12);
+      border-radius: var(--radius-md);
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 14px;
+      transition: all var(--dur-fast) var(--ease-standard);
+    }
+
+    .guide-nav__section:hover {
+      background: rgba(84, 100, 235, 0.1);
+      border-color: rgba(84, 100, 235, 0.5);
+    }
+
+    .guide-nav__section.is-active {
+      background: linear-gradient(180deg, rgba(84, 100, 235, 0.18), rgba(83, 100, 236, 0.1));
+      border-color: rgba(84, 100, 235, 0.9);
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    /* Guide Steps */
+    .guide-steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-24);
+    }
+
+    .guide-section {
+      scroll-margin-top: 100px;
+    }
+
+    .guide-section__title {
+      margin: 0 0 var(--space-16) 0;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--color-primary);
+      letter-spacing: 0.3px;
+      padding-bottom: var(--space-8);
+      border-bottom: 2px solid rgba(84, 100, 235, 0.3);
+    }
+
+    .guide-section__steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+
+    .guide-step {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+      padding: var(--space-16);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+    }
+
+    .guide-step__number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(180deg, var(--color-primary), var(--color-primary-light));
+      color: var(--text-primary);
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .guide-step__header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-12);
+    }
+
+    .guide-step__text {
+      flex: 1;
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: var(--line-height-normal);
+    }
+
+    .guide-step__image {
+      margin-top: var(--space-8);
+    }
+
+    .guide-step__note {
+      margin-top: var(--space-8);
+      padding: var(--space-12);
+      background: rgba(84, 100, 235, 0.08);
+      border-left: 3px solid var(--color-primary);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .guide-step__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-8);
+      margin-top: var(--space-8);
+    }
+
+    /* Back Button */
+    .back-btn {
+      margin-bottom: var(--space-20);
+    }
+
+    /* Tablet Responsive */
+    @media (max-width: 980px) {
+      .platform-btn {
+        min-width: 180px;
+      }
+
+      .guide-nav {
+        position: relative;
+        top: 0;
+        max-height: none;
+        margin-bottom: var(--space-16);
+      }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 680px) {
+      .platform-selector {
+        padding: var(--space-16);
+      }
+
+      .platform-selector__title {
+        font-size: 20px;
+      }
+
+      .platform-buttons {
+        flex-direction: column;
+        gap: var(--space-12);
+      }
+
+      .platform-btn {
+        max-width: 100%;
+        min-width: 100%;
+        padding: var(--space-20) var(--space-16);
+      }
+
+      .platform-btn__icon {
+        width: 56px;
+        height: 56px;
+      }
+
+      .platform-btn__label {
+        font-size: 18px;
+      }
+
+      .platform-btn__desc {
+        font-size: 13px;
+      }
+
+      .guide-nav {
+        position: relative;
+        top: 0;
+        max-height: none;
+        padding: var(--space-12);
+      }
+
+      .guide-nav__title {
+        font-size: 15px;
+      }
+
+      .guide-nav__section {
+        font-size: 13px;
+        padding: var(--space-6) var(--space-10);
+      }
+
+      .guide-section__title {
+        font-size: 18px;
+      }
+
+      .guide-step {
+        padding: var(--space-14);
+      }
+
+      .guide-step__number {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+      }
+
+      .guide-step__text {
+        font-size: 15px;
+      }
+
+      .guide-step__note {
+        font-size: 13px;
+        padding: var(--space-10);
+      }
+
+      .back-btn {
+        font-size: 14px;
+        padding: var(--space-10) var(--space-14);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .platform-selector__title {
+        font-size: 18px;
+      }
+
+      .platform-btn {
+        padding: var(--space-16);
+      }
+
+      .platform-btn__icon {
+        width: 48px;
+        height: 48px;
+      }
+
+      .platform-btn__label {
+        font-size: 17px;
+      }
+
+      .guide-section__title {
+        font-size: 17px;
+      }
+
+      .guide-step {
+        padding: var(--space-12);
+      }
+
+      .guide-step__text {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .platform-selector {
+        padding: var(--space-12);
+      }
+
+      .platform-selector__title {
+        font-size: 17px;
+      }
+
+      .platform-btn__icon {
+        width: 42px;
+        height: 42px;
+      }
+
+      .platform-btn__label {
+        font-size: 16px;
+      }
+
+      .platform-btn__desc {
+        font-size: 12px;
+      }
+
+      .guide-step {
+        padding: var(--space-10);
+        gap: var(--space-10);
+      }
+
+      .guide-step__number {
+        width: 26px;
+        height: 26px;
+        font-size: 13px;
+      }
+
+      .guide-step__text {
+        font-size: 13px;
+      }
+    }
+
+    /* Hidden state */
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
   <main class="single-card-container">
-    <div class="single-card card-group">
+    <!-- Platform Selector -->
+    <div id="platformSelector" class="single-card card-group">
       <div class="card-head">
-        <h2 class="card-head__title">Мобильная инструкция: получение Stripe‑ссылки (Android/iOS)</h2>
+        <h2 class="card-head__title">Выберите вашу платформу</h2>
+        <a class="head-tag" href="https://play.google.com/store/apps/details?id=site.mises.browser_stable" target="_blank" rel="noopener">
+          Скачать Mises Browser
+        </a>
       </div>
-      <section class="card" tabindex="-1" aria-label="Шаги инструкции для мобильных устройств">
-        <ol class="steps">
-          <li>
-            Установите нужный браузер/инструмент:
-            <div class="actions-inline">
-              <a class="btn store-badge store-badge--google" href="https://play.google.com/store/apps/details?id=com.kiwibrowser.browser" target="_blank" rel="noopener">
-                <img class="btn__icon" src="image/Icon-Google_Play_Android.svg" alt="Google Play" />
-                Google Play (Kiwi)
-              </a>
-              <a class="btn store-badge store-badge--apple" href="https://apps.apple.com/ru/app/web-inspector/id1584825745" target="_blank" rel="noopener">
-                <img class="btn__icon" src="image/Icon-App_Store_iOS.svg" alt="App Store" />
-                App Store (Web Inspector)
-              </a>
+
+      <section class="card platform-selector">
+        <h3 class="platform-selector__title">Инструкция для получения Stripe-ссылки</h3>
+
+        <div class="platform-buttons">
+          <button class="platform-btn" data-platform="android" aria-label="Выбрать Android">
+            <img class="platform-btn__icon" src="image/Logo-Android.svg" alt="Android" />
+            <span class="platform-btn__label">Android</span>
+            <span class="platform-btn__desc">Mises Browser для Android</span>
+          </button>
+
+          <button class="platform-btn" data-platform="ios" aria-label="Выбрать iOS">
+            <img class="platform-btn__icon" src="image/Logo-iOS-white.svg" alt="iOS" />
+            <span class="platform-btn__label">iOS</span>
+            <span class="platform-btn__desc">Mises Browser для iOS</span>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Android Guide -->
+    <div id="guideAndroid" class="guide-container single-card card-group">
+      <button class="btn btn--secondary back-btn" onclick="showPlatformSelector()">
+        ← Вернуться к выбору платформы
+      </button>
+
+      <div class="card-head">
+        <h2 class="card-head__title">Инструкция для Android (Mises Browser)</h2>
+        <a class="head-tag" href="https://play.google.com/store/apps/details?id=site.mises.browser_stable" target="_blank" rel="noopener">
+          Скачать Mises Browser
+          <img class="head-tag__icon" src="image/Logo-Android.svg" alt="Android" />
+        </a>
+      </div>
+
+      <section class="card">
+        <nav class="guide-nav" aria-label="Навигация по разделам">
+          <h3 class="guide-nav__title">Разделы инструкции:</h3>
+          <ul class="guide-nav__sections">
+            <li class="guide-nav__section is-active" data-section="android-start">Начало работы</li>
+            <li class="guide-nav__section" data-section="android-login">Вход в аккаунт ChatGPT</li>
+            <li class="guide-nav__section" data-section="android-devtools">Открытие DevTools</li>
+            <li class="guide-nav__section" data-section="android-console">Получение ссылки</li>
+          </ul>
+        </nav>
+
+        <div class="guide-steps">
+          <!-- Section 1: Начало -->
+          <div id="android-start" class="guide-section">
+            <h3 class="guide-section__title">Начало работы</h3>
+            <div class="guide-section__steps">
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">1</span>
+                  <div class="guide-step__text">
+                    При первом запуске браузера появится предложение использовать его по умолчанию
+                    <div class="guide-step__note">💡 Рекомендация: нажмите "Отмена"</div>
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/1-cancel-set-default-browser.jpg" alt="Отмена установки браузера по умолчанию" data-full="image/image_mobile_android/1-cancel-set-default-browser.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">2</span>
+                  <div class="guide-step__text">
+                    Браузер предложит включить уведомления
+                    <div class="guide-step__note">💡 Рекомендация: нажмите "Нет, спасибо"</div>
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/2-cancel-enable-notifications.jpg" alt="Отклонение уведомлений" data-full="image/image_mobile_android/2-cancel-enable-notifications.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">3</span>
+                  <div class="guide-step__text">
+                    На стартовой странице браузера нажмите на адресную строку вверху экрана
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/3-main-browser-page.jpg" alt="Главная страница браузера" data-full="image/image_mobile_android/3-main-browser-page.jpg" />
+                </div>
+              </div>
+
             </div>
-          </li>
-          <li>Запустите приложение (Kiwi или Web Inspector).</li>
-          <li>
-            Откройте сайт ChatGPT
-            <div class="actions-inline">
-              <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com" target="_blank" rel="noopener">
-                <img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть ChatGPT
-              </a>
+          </div>
+
+          <!-- Section 2: Вход в аккаунт -->
+          <div id="android-login" class="guide-section">
+            <h3 class="guide-section__title">Вход в аккаунт ChatGPT</h3>
+            <div class="guide-section__steps">
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">4</span>
+                  <div class="guide-step__text">
+                    В адресной строке введите: chatgpt.com и откройте сайт
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/4-open-chatgpt.com.jpg" alt="Открытие chatgpt.com" data-full="image/image_mobile_android/4-open-chatgpt.com.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">5</span>
+                  <div class="guide-step__text">
+                    На странице chatgpt.com появится уведомление об использовании Cookie
+                    <div class="guide-step__note">💡 Рекомендация: нажмите "Отклонить несущественное"</div>
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/5-chatgpt-cookie-request.jpg" alt="Уведомление о Cookie" data-full="image/image_mobile_android/5-chatgpt-cookie-request.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">6</span>
+                  <div class="guide-step__text">
+                    На главной странице ChatGPT в правом верхнем углу нажмите кнопку "Login" (Войти)
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/6-chatgpt-main-page.jpg" alt="Главная страница ChatGPT" data-full="image/image_mobile_android/6-chatgpt-main-page.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">7</span>
+                  <div class="guide-step__text">
+                    Выполните вход в аккаунт как делаете это обычно
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/7-login-account-chatgpt.jpg" alt="Вход в аккаунт ChatGPT" data-full="image/image_mobile_android/7-login-account-chatgpt.jpg" />
+                </div>
+              </div>
+
             </div>
-          </li>
-          <li>
-            Авторизуйтесь в аккаунте ChatGPT
-            <div class="actions-inline">
-              <a class="btn btn--secondary" href="https://auth.openai.com/log-in-or-create-account" target="_blank" rel="noopener">
-                <img class="btn__icon" src="image/Icon-Login-account-white.svg" alt="Войти" />Войти в аккаунт
-              </a>
+          </div>
+
+          <!-- Section 3: Открытие DevTools -->
+          <div id="android-devtools" class="guide-section">
+            <h3 class="guide-section__title">Открытие DevTools для вставки скрипта</h3>
+            <div class="guide-section__steps">
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">8</span>
+                  <div class="guide-step__text">
+                    В правом нижнем углу нажмите на значок "3 точки" (меню)
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/8-open-additional-menu-on-page-3-dots.jpg" alt="Открытие меню" data-full="image/image_mobile_android/8-open-additional-menu-on-page-3-dots.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">9</span>
+                  <div class="guide-step__text">
+                    В открывшемся списке внизу выберите "Инструменты разработчика"
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/9-select-developer-tools.jpg" alt="Выбор инструментов разработчика" data-full="image/image_mobile_android/9-select-developer-tools.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">10</span>
+                  <div class="guide-step__text">
+                    Откроется панель DevTools (текст будет мелким)
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/10-devtools-open.jpg" alt="Панель DevTools открыта" data-full="image/image_mobile_android/10-devtools-open.jpg" />
+                </div>
+              </div>
+
             </div>
-          </li>
-          <li>
-            После входа в аккаунт ChatGPT — скопируйте код для консоли
-            <div class="actions-inline">
-              <button class="btn" data-action="copy-console-plus" title="Скопировать код консоли Plus">Код консоли на Plus план</button>
-              <button class="btn" data-action="copy-console-pro" title="Скопировать код консоли Pro">Код консоли на Pro план</button>
+          </div>
+
+          <!-- Section 4: Получение ссылки -->
+          <div id="android-console" class="guide-section">
+            <h3 class="guide-section__title">Получение ссылки на оплату - работа с Console</h3>
+            <div class="guide-section__steps">
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">11</span>
+                  <div class="guide-step__text">
+                    В левой верхней части панели DevTools найдите вкладку "Console" и нажмите на неё
+                    <div class="guide-step__note">💡 При необходимости увеличьте масштаб страницы двумя пальцами</div>
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/11-select-console-tab.jpg" alt="Выбор вкладки Console" data-full="image/image_mobile_android/11-select-console-tab.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">12</span>
+                  <div class="guide-step__text">
+                    В консоли (белое поле для ввода) появится готовое к работе окно
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/12-console-tab-open.jpg" alt="Консоль готова к работе" data-full="image/image_mobile_android/12-console-tab-open.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">13</span>
+                  <div class="guide-step__text">
+                    Выполните вставку кода для требуемого плана ChatGPT (Plus или Pro) — после вставки нажмите Enter на клавиатуре
+                  </div>
+                </div>
+                <div class="guide-step__actions">
+                  <button class="btn" data-action="copy-console-plus" title="Скопировать код консоли Plus">Код консоли на Plus план</button>
+                  <button class="btn" data-action="copy-console-pro" title="Скопировать код консоли Pro">Код консоли на Pro план</button>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/13-paste-code-console.jpg" alt="Вставка кода в консоль" data-full="image/image_mobile_android/13-paste-code-console.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">14</span>
+                  <div class="guide-step__text">
+                    Подождите 2-3 секунды — в консоли появится сообщение: "🎉 Ссылка на оплату:"
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/14-payment-link-result.jpg" alt="Результат - ссылка появилась" data-full="image/image_mobile_android/14-payment-link-result.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">15</span>
+                  <div class="guide-step__text">
+                    Зажмите на появившуюся ссылку (долгий тап)
+                    <div class="guide-step__note">
+                      • Появится контекстное меню<br>
+                      • Нажмите "Copy link address" (Скопировать адрес ссылки)
+                    </div>
+                  </div>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/15-copy-payment-link.jpg" alt="Копирование ссылки" data-full="image/image_mobile_android/15-copy-payment-link.jpg" />
+                </div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step__header">
+                  <span class="guide-step__number">16</span>
+                  <div class="guide-step__text">
+                    Ссылка на оплату скопируется в буфер обмена вашего устройства и готова к использованию
+                  </div>
+                </div>
+                <div class="guide-step__actions">
+                  <a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Отправить менеджеру в Telegram</a>
+                </div>
+                <div class="guide-step__image">
+                  <img class="img-thumb" src="image/image_mobile_android/16-link-ready-send.jpg" alt="Ссылка готова к отправке" data-full="image/image_mobile_android/16-link-ready-send.jpg" />
+                </div>
+              </div>
+
             </div>
-          </li>
-          <li>
-            Нажимаем на «три точки», нажимаем «Инструменты разработчика»
-            <img class="img-thumb" src="image/mobileImage_var2/1.jpg" alt="Открыть инструменты разработчика" data-full="image/mobileImage_var2/1.jpg" />
-          </li>
-          <li>
-            В открывшемся окне, открываем вкладку «Console»
-            <img class="img-thumb" src="image/mobileImage_var2/2.jpg" alt="Вкладка Console" data-full="image/mobileImage_var2/2.jpg" />
-          </li>
-          <li>
-            Вставьте скопированный код в консоль и подтвердите отправку (~два раза "enter" на клавиатуре)
-            <img class="img-thumb" src="image/mobileImage_var2/3.jpg" alt="Вставка кода в консоль" data-full="image/mobileImage_var2/3.jpg" />
-          </li>
-          <li>
-            Через ~10 секунд в консоли появится ссылка
-            <img class="img-thumb" src="image/mobileImage_var2/4.jpg" alt="Ссылка Stripe в консоли" data-full="image/mobileImage_var2/4.jpg" />
-          </li>
-          <li>
-            Скопируйте ссылку и отправьте менеджеру. Кнопка ниже — контакты менеджера
-            <div class="actions-inline">
-              <a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Менеджер в Telegram</a>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- iOS Guide -->
+    <div id="guideIOS" class="guide-container single-card card-group">
+      <button class="btn btn--secondary back-btn" onclick="showPlatformSelector()">
+        ← Вернуться к выбору платформы
+      </button>
+
+      <div class="card-head">
+        <h2 class="card-head__title">Инструкция для iOS (Mises Browser)</h2>
+        <a class="head-tag" href="https://apps.apple.com/us/app/mises-browser/id6451129542" target="_blank" rel="noopener">
+          Скачать Mises Browser
+          <img class="head-tag__icon" src="image/Logo-iOS-white.svg" alt="iOS" />
+        </a>
+      </div>
+
+      <section class="card">
+        <div class="guide-steps">
+          <div class="guide-section">
+            <h3 class="guide-section__title">Инструкция в разработке</h3>
+            <div class="guide-step">
+              <div class="guide-step__text">
+                Инструкция для iOS находится в разработке. Пожалуйста, следите за обновлениями или свяжитесь с менеджером для получения помощи.
+              </div>
+              <div class="guide-step__actions">
+                <a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Связаться с менеджером</a>
+              </div>
             </div>
-          </li>
-        </ol>
+          </div>
+        </div>
       </section>
     </div>
 
@@ -88,22 +760,102 @@
   <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
   <script type="module" src="app.js"></script>
   <script type="module">
-    // Lightweight image lightbox for thumbnails on this page
+    // Platform Selection
+    const platformSelector = document.getElementById('platformSelector');
+    const guideAndroid = document.getElementById('guideAndroid');
+    const guideIOS = document.getElementById('guideIOS');
+
+    document.querySelectorAll('.platform-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const platform = btn.dataset.platform;
+        platformSelector.classList.add('hidden');
+
+        if (platform === 'android') {
+          guideAndroid.classList.add('is-active');
+        } else if (platform === 'ios') {
+          guideIOS.classList.add('is-active');
+        }
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    window.showPlatformSelector = function() {
+      platformSelector.classList.remove('hidden');
+      guideAndroid.classList.remove('is-active');
+      guideIOS.classList.remove('is-active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // Section Navigation
+    document.querySelectorAll('.guide-nav__section').forEach(navItem => {
+      navItem.addEventListener('click', () => {
+        // Update active state
+        document.querySelectorAll('.guide-nav__section').forEach(item => {
+          item.classList.remove('is-active');
+        });
+        navItem.classList.add('is-active');
+
+        // Scroll to section
+        const sectionId = navItem.dataset.section;
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Update active navigation on scroll
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id;
+          document.querySelectorAll('.guide-nav__section').forEach(navItem => {
+            if (navItem.dataset.section === sectionId) {
+              document.querySelectorAll('.guide-nav__section').forEach(item => {
+                item.classList.remove('is-active');
+              });
+              navItem.classList.add('is-active');
+            }
+          });
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    document.querySelectorAll('.guide-section').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Lightweight image lightbox for thumbnails
     const lb = document.getElementById('lightbox');
     const lbImg = lb.querySelector('.lightbox__img');
     const lbClose = lb.querySelector('.lightbox__close');
+
     function openLightbox(src, alt) {
       lbImg.src = src;
       lbImg.alt = alt || 'Превью шага';
       lb.setAttribute('aria-hidden', 'false');
       document.addEventListener('keydown', onEsc);
     }
+
     function closeLightbox() {
       lb.setAttribute('aria-hidden', 'true');
       lbImg.removeAttribute('src');
       document.removeEventListener('keydown', onEsc);
     }
-    function onEsc(e){ if(e.key === 'Escape') closeLightbox(); }
+
+    function onEsc(e) {
+      if (e.key === 'Escape') closeLightbox();
+    }
+
     document.addEventListener('click', (e) => {
       const thumb = e.target.closest('.img-thumb');
       if (thumb) {
@@ -113,12 +865,8 @@
       }
       if (e.target === lb) closeLightbox();
     });
+
     lbClose.addEventListener('click', closeLightbox);
   </script>
 </body>
-<!--
-  Notes:
-  - This page reuses global card styles to visually match index.html.
-  - Thumbnails are smaller and open in a lightbox for closer inspection.
--->
 </html>

@@ -1,2 +1,5 @@
 # Markdown files
 *.md
+
+# Python files
+*.py
