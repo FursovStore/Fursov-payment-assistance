@@ -1021,11 +1021,11 @@ img.btn__icon[src*="AppStore"],
 
 /* Pseudo-element Icons */
 button[data-action="copy-bookmarklet"]::before,
-button[data-action="copy-bookmarklet-plus"]::before,
-button[data-action="copy-bookmarklet-pro"]::before,
+button[data-action^="copy-bookmarklet-plus"]::before,
+button[data-action^="copy-bookmarklet-pro"]::before,
 button[data-action="copy-console"]::before,
-button[data-action="copy-console-plus"]::before,
-button[data-action="copy-console-pro"]::before,
+button[data-action^="copy-console-plus"]::before,
+button[data-action^="copy-console-pro"]::before,
 button[data-action="copy-token"]::before,
 button[data-action="copy-api-code"]::before {
   content: "";

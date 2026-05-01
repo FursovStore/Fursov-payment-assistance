@@ -35,144 +35,165 @@ async function writeClipboard(text) {
   }
 }
 
-// Bookmarklet code - Plus plan
-const BOOKMARKLET_PLUS = "javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Зайдите на chatgpt.com под своим аккаунтом и попробуйте снова');return}const plans=['chatgptplusplan','chatgptplus'];let url=null;for(const plan of plans){const a={plan_name:plan,billing_details:{country:'US',currency:'USD'},promo_code:null,checkout_ui_mode:'redirect'};try{const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':'Bearer '+j.accessToken},body:JSON.stringify(a)});const d=await r.json();if(d?.url){url=d.url;break}}catch(e){continue}}if(!url){alert('Не удалось получить ссылку. Возможно включён новый метод оплаты.');return}prompt('Скопируйте ссылку на оплату (старого образца):',url)}catch(e){alert('Ошибка: '+(e&&e.message?e.message:e))}})();";
+// Billing presets
+const BILLING_US = { country: 'US', currency: 'USD', label: 'US USD' };
+const BILLING_TL = { country: 'TL', currency: 'PHP', label: 'PH PHP' };
 
-// Bookmarklet code - Pro plan
-const BOOKMARKLET_PRO = "javascript:(async()=>{try{const s=await fetch('/api/auth/session',{credentials:'include'});const j=await s.json();if(!j?.accessToken){alert('Зайдите на chatgpt.com под своим аккаунтом и попробуйте снова');return}const plans=['chatgptpro','chatgptproplan'];let url=null;for(const plan of plans){const a={plan_name:plan,billing_details:{country:'US',currency:'USD'},promo_code:null,checkout_ui_mode:'redirect'};try{const r=await fetch('https://chatgpt.com/backend-api/payments/checkout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','authorization':'Bearer '+j.accessToken},body:JSON.stringify(a)});const d=await r.json();if(d?.url){url=d.url;break}}catch(e){continue}}if(!url){alert('Не удалось получить ссылку. Возможно включён новый метод оплаты.');return}prompt('Скопируйте ссылку на оплату (старого образца):',url)}catch(e){alert('Ошибка: '+(e&&e.message?e.message:e))}})();";
+const BOOKMARKLET_PLUS_PLANS = ['chatgptplusplan', 'chatgptplus'];
+const BOOKMARKLET_PRO_PLANS = ['chatgptpro', 'chatgptproplan'];
+const CONSOLE_PLUS_PLANS = ['chatgplus', 'chatgptplusplan'];
+const CONSOLE_PRO_PLANS = ['chatgpro', 'chatgptpro'];
 
-// Console code - Plus plan
-const CONSOLE_CODE_PLUS = `(async () => {
+function createBookmarkletSource(plans, billing) {
+  const plansLiteral = JSON.stringify(plans);
+
+  return `(async () => {
   try {
-    console.log('🔄 Получение токена авторизации...');
-    
-    const authReq = await fetch('/api/auth/session', { credentials: 'include' });
-    if (!authReq.ok) throw new Error(\`Ошибка авторизации: \${authReq.status}\`);
-    
-    const authToken = (await authReq.json())?.accessToken;
-    if (!authToken) throw new Error('Токен не найден. Войдите в аккаунт');
-    
-    console.log('✅ Токен получен');
-    
-    const plans = ['chatgplus', 'chatgptplusplan'];
-    let checkoutUrl = null;
-    
+    const sessionRes = await fetch('/api/auth/session', { credentials: 'include' });
+    const session = await sessionRes.json();
+
+    if (!session?.accessToken) {
+      alert('Токен не найден. Войдите в аккаунт chatgpt.com');
+      return;
+    }
+
+    const plans = ${plansLiteral};
+    let url = null;
+
     for (const planName of plans) {
-      console.log(\`🔄 Попытка получить ссылку для плана: \${planName}...\`);
-      
+      const payload = {
+        plan_name: planName,
+        billing_details: { country: '${billing.country}', currency: '${billing.currency}' },
+        promo_code: null,
+        checkout_ui_mode: 'redirect',
+      };
+
       try {
         const res = await fetch('https://chatgpt.com/backend-api/payments/checkout', {
           method: 'POST',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            authorization: \`Bearer \${authToken}\`,
+            authorization: 'Bearer ' + session.accessToken,
           },
-          body: JSON.stringify({
-            plan_name: planName,
-            billing_details: { country: 'US', currency: 'USD' },
-            promo_code: null,
-            checkout_ui_mode: 'redirect',
-          }),
+          body: JSON.stringify(payload),
         });
-        
-        if (!res.ok) {
-          console.warn(\`⚠️ План "\${planName}" не сработал: HTTP \${res.status}\`);
-          continue;
-        }
-        
+
         const data = await res.json();
         if (data?.url) {
-          checkoutUrl = data.url;
-          console.log(\`✅ Ссылка успешно получена для плана: \${planName}\`);
+          url = data.url;
           break;
         }
-      } catch (err) {
-        console.warn(\`⚠️ Ошибка при запросе плана "\${planName}": \${err.message}\`);
+      } catch (error) {
+        continue;
       }
     }
-    
-    if (!checkoutUrl) throw new Error('Не удалось получить ссылку для всех планов');
-    
-    console.log('\\n\\n');
-    console.log('🎉 Ссылка на оплату:');
-    console.log(checkoutUrl);
-    console.log('\\n\\n');
-    
-    return checkoutUrl;
-    
+
+    if (!url) {
+      alert('Не удалось получить ссылку.');
+      return;
+    }
+
+    prompt('Скопируйте ссылку на оплату (${billing.label}):', url);
   } catch (error) {
-    console.error('❌ Произошла ошибка:', error.message || error);
-    throw error;
+    alert('❌ Произошла ошибка: ' + (error && error.message ? error.message : error));
   }
 })();`;
+}
 
-// Console code - Pro plan
-const CONSOLE_CODE_PRO = `(async () => {
+function toBookmarklet(source) {
+  return 'javascript:' + source.replace(/\n\s*/g, ' ').trim();
+}
+
+function createBookmarklet(plans, billing) {
+  return toBookmarklet(createBookmarkletSource(plans, billing));
+}
+
+function createConsoleCode(plans, billing) {
+  const plansLiteral = JSON.stringify(plans);
+
+  return `(async () => {
   try {
     console.log('🔄 Получение токена авторизации...');
-    
+
     const authReq = await fetch('/api/auth/session', { credentials: 'include' });
-    if (!authReq.ok) throw new Error(\`Ошибка авторизации: \${authReq.status}\`);
-    
+    if (!authReq.ok) throw new Error('Ошибка авторизации: ' + authReq.status);
+
     const authToken = (await authReq.json())?.accessToken;
     if (!authToken) throw new Error('Токен не найден. Войдите в аккаунт');
-    
+
     console.log('✅ Токен получен');
-    
-    const plans = ['chatgpro', 'chatgptpro'];
+
+    const plans = ${plansLiteral};
     let checkoutUrl = null;
-    
+
     for (const planName of plans) {
-      console.log(\`🔄 Попытка получить ссылку для плана: \${planName}...\`);
-      
+      console.log('🔄 Попытка получить ссылку для плана: ' + planName + ' (${billing.country}/${billing.currency})...');
+
       try {
         const res = await fetch('https://chatgpt.com/backend-api/payments/checkout', {
           method: 'POST',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            authorization: \`Bearer \${authToken}\`,
+            authorization: 'Bearer ' + authToken,
           },
           body: JSON.stringify({
             plan_name: planName,
-            billing_details: { country: 'US', currency: 'USD' },
+            billing_details: { country: '${billing.country}', currency: '${billing.currency}' },
             promo_code: null,
             checkout_ui_mode: 'redirect',
           }),
         });
-        
+
         if (!res.ok) {
-          console.warn(\`⚠️ План "\${planName}" не сработал: HTTP \${res.status}\`);
+          console.warn('⚠️ План "' + planName + '" не сработал (${billing.country}/${billing.currency}): HTTP ' + res.status);
           continue;
         }
-        
+
         const data = await res.json();
         if (data?.url) {
           checkoutUrl = data.url;
-          console.log(\`✅ Ссылка успешно получена для плана: \${planName}\`);
+          console.log('✅ Ссылка успешно получена для плана: ' + planName + ' (${billing.country}/${billing.currency})');
           break;
         }
       } catch (err) {
-        console.warn(\`⚠️ Ошибка при запросе плана "\${planName}": \${err.message}\`);
+        console.warn('⚠️ Ошибка при запросе плана "' + planName + '" (${billing.country}/${billing.currency}): ' + err.message);
       }
     }
-    
-    if (!checkoutUrl) throw new Error('Не удалось получить ссылку для всех планов');
-    
+
+    if (!checkoutUrl) throw new Error('Не удалось получить ссылку для всех планов (${billing.country}/${billing.currency})');
+
     console.log('\\n\\n');
     console.log('🎉 Ссылка на оплату:');
     console.log(checkoutUrl);
     console.log('\\n\\n');
-    
+
     return checkoutUrl;
-    
   } catch (error) {
     console.error('❌ Произошла ошибка:', error.message || error);
     throw error;
   }
 })();`;
+}
 
+// Bookmarklet code - Plus plan (US)
+const BOOKMARKLET_PLUS_US = createBookmarklet(BOOKMARKLET_PLUS_PLANS, BILLING_US);
+// Bookmarklet code - Plus plan (PH)
+const BOOKMARKLET_PLUS_TL = createBookmarklet(BOOKMARKLET_PLUS_PLANS, BILLING_TL);
+// Bookmarklet code - Pro plan (US)
+const BOOKMARKLET_PRO_US = createBookmarklet(BOOKMARKLET_PRO_PLANS, BILLING_US);
+// Bookmarklet code - Pro plan (PH)
+const BOOKMARKLET_PRO_TL = createBookmarklet(BOOKMARKLET_PRO_PLANS, BILLING_TL);
+
+// Console code - Plus plan (US)
+const CONSOLE_CODE_PLUS_US = createConsoleCode(CONSOLE_PLUS_PLANS, BILLING_US);
+// Console code - Plus plan (PH)
+const CONSOLE_CODE_PLUS_TL = createConsoleCode(CONSOLE_PLUS_PLANS, BILLING_TL);
+// Console code - Pro plan (US)
+const CONSOLE_CODE_PRO_US = createConsoleCode(CONSOLE_PRO_PLANS, BILLING_US);
+// Console code - Pro plan (PH)
+const CONSOLE_CODE_PRO_TL = createConsoleCode(CONSOLE_PRO_PLANS, BILLING_TL);
 // Hash highlight (#var1/#var2)
 function applyHashHighlight() {
   const h = (location.hash || '').toLowerCase();
@@ -205,16 +226,32 @@ function onClick(e) {
 
   switch (action) {
     case 'copy-bookmarklet-plus':
-      writeClipboard(BOOKMARKLET_PLUS).then(ok => toast(ok ? 'Код закладки Plus скопирован' : 'Не удалось скопировать'));
+    case 'copy-bookmarklet-plus-us':
+      writeClipboard(BOOKMARKLET_PLUS_US).then(ok => toast(ok ? 'Код закладки Plus (US USD) скопирован' : 'Не удалось скопировать'));
+      break;
+    case 'copy-bookmarklet-plus-tl':
+      writeClipboard(BOOKMARKLET_PLUS_TL).then(ok => toast(ok ? 'Код закладки Plus (PH PHP) скопирован' : 'Не удалось скопировать'));
       break;
     case 'copy-bookmarklet-pro':
-      writeClipboard(BOOKMARKLET_PRO).then(ok => toast(ok ? 'Код закладки Pro скопирован' : 'Не удалось скопировать'));
+    case 'copy-bookmarklet-pro-us':
+      writeClipboard(BOOKMARKLET_PRO_US).then(ok => toast(ok ? 'Код закладки Pro (US USD) скопирован' : 'Не удалось скопировать'));
+      break;
+    case 'copy-bookmarklet-pro-tl':
+      writeClipboard(BOOKMARKLET_PRO_TL).then(ok => toast(ok ? 'Код закладки Pro (PH PHP) скопирован' : 'Не удалось скопировать'));
       break;
     case 'copy-console-plus':
-      writeClipboard(CONSOLE_CODE_PLUS).then(ok => toast(ok ? 'Код консоли Plus скопирован' : 'Не удалось скопировать'));
+    case 'copy-console-plus-us':
+      writeClipboard(CONSOLE_CODE_PLUS_US).then(ok => toast(ok ? 'Код консоли Plus (US USD) скопирован' : 'Не удалось скопировать'));
+      break;
+    case 'copy-console-plus-tl':
+      writeClipboard(CONSOLE_CODE_PLUS_TL).then(ok => toast(ok ? 'Код консоли Plus (PH PHP) скопирован' : 'Не удалось скопировать'));
       break;
     case 'copy-console-pro':
-      writeClipboard(CONSOLE_CODE_PRO).then(ok => toast(ok ? 'Код консоли Pro скопирован' : 'Не удалось скопировать'));
+    case 'copy-console-pro-us':
+      writeClipboard(CONSOLE_CODE_PRO_US).then(ok => toast(ok ? 'Код консоли Pro (US USD) скопирован' : 'Не удалось скопировать'));
+      break;
+    case 'copy-console-pro-tl':
+      writeClipboard(CONSOLE_CODE_PRO_TL).then(ok => toast(ok ? 'Код консоли Pro (PH PHP) скопирован' : 'Не удалось скопировать'));
       break;
     case 'send-to-manager': {
       const raw = $('#sessionJson').value.trim();
@@ -246,14 +283,19 @@ setInterval(() => {
 
 // Inject bookmarklet href for drag-to-bookmarks links
 (() => {
-  const linkPlus = document.querySelector('[data-bookmarklet-plus]');
-  if (linkPlus) {
-    try { linkPlus.setAttribute('href', BOOKMARKLET_PLUS); } catch {}
-  }
-  const linkPro = document.querySelector('[data-bookmarklet-pro]');
-  if (linkPro) {
-    try { linkPro.setAttribute('href', BOOKMARKLET_PRO); } catch {}
-  }
+  const bookmarkletLinks = [
+    ['[data-bookmarklet-plus-us]', BOOKMARKLET_PLUS_US],
+    ['[data-bookmarklet-plus-tl]', BOOKMARKLET_PLUS_TL],
+    ['[data-bookmarklet-pro-us]', BOOKMARKLET_PRO_US],
+    ['[data-bookmarklet-pro-tl]', BOOKMARKLET_PRO_TL],
+  ];
+
+  bookmarkletLinks.forEach(([selector, href]) => {
+    const link = document.querySelector(selector);
+    if (link) {
+      try { link.setAttribute('href', href); } catch {}
+    }
+  });
 })();
 
 // Ensure a synchronized header across all pages by cloning from index.html if missing
