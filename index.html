@@ -4,12 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fursov - your payment assistance</title>
-  <meta name="description" content="Три способа получить ссылку Stripe для ChatGPT: закладка, через консоль или вручную по API. Быстро, безопасно, понятно." />
+  <meta name="description" content="Три способа получить ссылку на оплату ChatGPT: закладка, консоль браузера или через API. Быстро, безопасно, понятно." />
   <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-fursovstore.png" />
   <link rel="preload" as="image" href="image/Logo-Fursov-white.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
   <header class="site-header" role="banner">
     <div class="brand">
       <div class="brand__logos" aria-label="Бренд Fursov и ChatGPT">
@@ -32,117 +33,197 @@
         <img class="chip__icon" src="image/favicon-avito.ico" alt="Avito" width="16" height="16" />
         Avito
       </a>
-            <a class="chip" href="https://funpay.com/users/11148640/" target="_blank" rel="noopener">
+      <a class="chip" href="https://funpay.com/users/11148640/" target="_blank" rel="noopener">
         <img class="chip__icon" src="image/favicon-funpay.ico" alt="FunPay" width="16" height="16" />
         FunPay
       </a>
-      <a class="chip" href="https://ggsel.net/sellers/164256" target="_blank" rel="noopener">
-        <img class="chip__icon" src="image/favicon-ggsel.ico" alt="GGSel" width="16" height="16" />
-        GGSel
+      <a class="chip" href="https://t.me/OplataRublemBot" target="_blank" rel="noopener">
+        <img class="chip__icon" src="image/Logo-OplataRublemBot.png" alt="OplataRublemBot" width="16" height="16" />
+        Оплата рублем
       </a>
     </nav>
   </header>
 
-
   <main id="main" class="container" role="main">
-    <section class="cards" aria-label="Инструкции по получению ссылки">
-  <div class="card-group">
-    <div class="card-head"><h2 class="card-head__title">Кнопка‑закладка (Stripe)</h2><span class="badge">Быстро и просто</span></div>
-    <article id="var1" class="card" tabindex="-1">
-        <p class="card__desc">Создание закладки по инструкции ниже и открытие её на сайте chatgpt.com</p>
-        <h3 class="section-title">Быстрый способ</h3>
-        <ol class="steps">
-          
-            <b>Создайте закладку быстрым способом</b>: зажмите ЛКМ по кнопке ниже и перетащите её в панель закладок вашего браузера.
-            <div class="actions-inline">
-              <a class="btn btn--icon-lg" data-bookmarklet-plus-us href="#" draggable="true" title="Перетащите в панель закладок"><img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />Plus план · <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</a>
-              <a class="btn btn--icon-lg" data-bookmarklet-plus-tl href="#" draggable="true" title="Перетащите в панель закладок"><img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />Plus план · <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</a>
-              <a class="btn btn--icon-lg" data-bookmarklet-pro-us href="#" draggable="true" title="Перетащите в панель закладок"><img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />Pro план · <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</a>
-              <a class="btn btn--icon-lg" data-bookmarklet-pro-tl href="#" draggable="true" title="Перетащите в панель закладок"><img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />Pro план · <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</a>
-            </div>
-            <div class="actions-inline"><span class="note">Если панель закладок не видна — нажмите: <b>Ctrl + Shift + B</b>
-            <div class="actions-inline"><span class="note">Если перетаскивание не работает — используйте ручной способ ниже.</span></div>
-          
-          
-        </ol>
-        <div class="divider" role="separator" aria-hidden="true"></div>
-        <h3 class="section-title">Ручной способ</h3>
-        <ol class="steps">
-          
-            <b>Ручной способ</b>: скопируйте код и создайте закладку вручную:
+
+    <!-- Cards -->
+    <section class="cards" aria-label="Способы получения ссылки на оплату">
+
+      <!-- Card 1: Bookmarklet -->
+      <div class="card-group">
+        <div class="card-head"><h2 class="card-head__title">Кнопка‑закладка</h2><span class="badge badge--green">Самый простой</span></div>
+        <article id="var1" class="card" tabindex="-1">
+          <p class="card__desc">Перетащите закладку в браузер один раз, затем просто нажимайте её на chatgpt.com.</p>
+
+          <h3 class="section-title">Быстрый способ</h3>
+          <p><b>Создайте закладку быстрым способом</b>: зажмите ЛКМ по кнопке ниже и перетащите её в панель закладок вашего браузера.</p>
+          <div class="actions-grid">
+            <a class="btn btn--icon-lg" data-bookmarklet-plus-us href="#" draggable="true" title="Перетащите в панель закладок">
+              <img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />
+              Plus · <img class="btn__icon btn__icon--flag" src="image/country/us.svg" alt="US" />US USD
+            </a>
+            <a class="btn btn--icon-lg" data-bookmarklet-plus-tl href="#" draggable="true" title="Перетащите в панель закладок">
+              <img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />
+              Plus · <img class="btn__icon btn__icon--flag" src="image/country/ph.svg" alt="PH" />TL PHP
+            </a>
+            <a class="btn btn--icon-lg" data-bookmarklet-pro-us href="#" draggable="true" title="Перетащите в панель закладок">
+              <img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />
+              Pro · <img class="btn__icon btn__icon--flag" src="image/country/us.svg" alt="US" />US USD
+            </a>
+            <a class="btn btn--icon-lg" data-bookmarklet-pro-tl href="#" draggable="true" title="Перетащите в панель закладок">
+              <img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />
+              Pro · <img class="btn__icon btn__icon--flag" src="image/country/ph.svg" alt="PH" />TL PHP
+            </a>
+            <a class="btn btn--icon-lg" data-bookmarklet-custom href="#" draggable="true" title="Перетащите в панель закладок">
+              <img class="btn__icon" src="image/Icon-bookmark-white.svg" alt="" />
+              <span data-custom-label>Plus · выберите ниже</span>
+            </a>
+          </div>
+          <div class="actions-inline"><span class="note">Если панель закладок не видна — нажмите: <b>Ctrl + Shift + B</b></span></div>
+          <div class="actions-inline"><span class="note">Если перетаскивание не работает — используйте ручной способ ниже.</span></div>
+
+          <div class="divider" role="separator" aria-hidden="true"></div>
+          <h3 class="section-title">Ручной способ</h3>
+          <p><b>Ручной способ</b>: скопируйте код и создайте закладку вручную:
             <br /><b>Название</b> — любое.
-            <br /><b>URL</b> — вставьте код из кнопки ниже
-            <div class="actions-inline">
-              <button class="btn" data-action="copy-bookmarklet-plus-us" title="Скопировать код закладки Plus (US USD)">Код на Plus план · <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</button>
-              <button class="btn" data-action="copy-bookmarklet-plus-tl" title="Скопировать код закладки Plus (PH PHP)">Код на Plus план · <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</button>
-              <button class="btn" data-action="copy-bookmarklet-pro-us" title="Скопировать код закладки Pro (US USD)">Код на Pro план · <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</button>
-              <button class="btn" data-action="copy-bookmarklet-pro-tl" title="Скопировать код закладки Pro (PH PHP)">Код на Pro план · <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</button>
-            </div>
-          
-        </ol>
-        <div class="divider" role="separator" aria-hidden="true"></div>
-        <h3 class="section-title">Использование на chatgpt.com</h3>
-        <ol class="steps">
-          <li>
-            <b>Перейдите на chatgpt.com</b> и выполните вход в свой аккаунт.
-            <div class="actions-inline">
-              <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть ChatGPT</a>
-            </div>
-          </li>
-          <li><b>Нажмите закладку</b> в панели закладок (чуть ниже адресной строки).</li>
-          <li>Через 10–15 секунд появится окно со ссылкой вида <code>https://checkout.stripe.com/...</code> — скопируйте её и отправьте менеджеру.</li>
-          <div class="actions-inline"><a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Менеджер в Telegram</a></div>
-        </ol>
-      </article>
-  </div>
-  <div class="card-group">
-    <div class="card-head"><h2 class="card-head__title">Через консоль браузера (Stripe)</h2><a class="head-tag" href="mobile2.html">Инструкция для мобильной версии<img class="head-tag__icon" src="image/Logo-Android.svg" alt="Android" /><img class="head-tag__icon" src="image/Logo-iOS-white.svg" alt="iOS" /></a></div>
-    <article id="var2" class="card" tabindex="-1">
-        <p class="card__desc">Получение ссылки через внутреннюю консоль браузера.</p>
-        <ol class="steps">
-          <li>
-            <b>Скопируйте код</b> для вставки в консоль, нажав кнопку ниже.
-            <div class="actions-inline">
-              <button class="btn" data-action="copy-console-plus-us" title="Скопировать код консоли Plus (US USD)">Код консоли на Plus план · <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</button>
-              <button class="btn" data-action="copy-console-plus-tl" title="Скопировать код консоли Plus (PH PHP)">Код консоли на Plus план · <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</button>
-              <button class="btn" data-action="copy-console-pro-us" title="Скопировать код консоли Pro (US USD)">Код консоли на Pro план · <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</button>
-              <button class="btn" data-action="copy-console-pro-tl" title="Скопировать код консоли Pro (PH PHP)">Код консоли на Pro план · <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</button>
-            </div>
-          </li>
-          <li>
-            <b>Откройте chatgpt.com</b> и выполните вход в свой аккаунт.
-            <div class="actions-inline">
-              <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть ChatGPT</a>
-            </div>
-          </li>
-          <li><b>Откройте консоль</b>: откройте DevTools:
-            <br /> нажмите <b>F12</b>
-            <br /> (или <b>Ctrl+Shift+I</b>) ➡️ вкладка <b>Console</b>.</li>
-          <li>
-            <b>Разрешите вставку кода</b>: Если появится предупреждение о защите от Self-XSS, вручную впишите в консоль:
-            <br /><code>allow pasting</code>
-            <br />и нажмите <b>Enter</b>. Это разрешит вставку кода в консоль.
-          </li>
-          <li>
-            <b>Вставьте код</b> в Console и нажмите Enter.
-            <br />В консоли появится ссылка
-            <br /><code>https://checkout.stripe.com/...</code>
-            <br />Скопируйте её и отправьте нам.
-            <div class="actions-inline">
-              <a class="btn btn--secondary" href="https://oplata.info/info/" target="_blank" rel="noopener">Чат с нами на Plati.Market <br />(последний заказ с Fursov)</a>
-              <a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Менеджер в Telegram</a>
-            </div>
-          </li>
-        </ol>
-        <p class="note">Если вместо Stripe‑ссылки появляется <code>https://chatgpt.com/checkout/...</code>, значит включён новый метод оплаты. В любом случае отправьте нам эту ссылку.</p>
-      </article>
-  </div>
-</section>
+            <br /><b>URL</b> — вставьте код из кнопки ниже.
+          </p>
+          <div class="actions-grid">
+            <button class="btn" data-action="copy-bookmarklet-plus-us">Plus · <img class="btn__icon btn__icon--flag" src="image/country/us.svg" alt="US" />US USD</button>
+            <button class="btn" data-action="copy-bookmarklet-plus-tl">Plus · <img class="btn__icon btn__icon--flag" src="image/country/ph.svg" alt="PH" />TL PHP</button>
+            <button class="btn" data-action="copy-bookmarklet-pro-us">Pro · <img class="btn__icon btn__icon--flag" src="image/country/us.svg" alt="US" />US USD</button>
+            <button class="btn" data-action="copy-bookmarklet-pro-tl">Pro · <img class="btn__icon btn__icon--flag" src="image/country/ph.svg" alt="PH" />TL PHP</button>
+            <button class="btn" data-action="copy-bookmarklet-custom"><span data-custom-label>Plus · выберите ниже</span></button>
+          </div>
+
+          <div class="divider" role="separator" aria-hidden="true"></div>
+          <h3 class="section-title">Использование на chatgpt.com</h3>
+          <ol class="steps">
+            <li>
+              <b>Перейдите на chatgpt.com</b> и выполните вход в свой аккаунт.
+              <div class="actions-inline">
+                <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть ChatGPT</a>
+              </div>
+            </li>
+            <li><b>Нажмите закладку</b> в панели закладок (чуть ниже адресной строки).</li>
+            <li>Через 10–15 секунд появится окно со ссылкой — скопируйте её и отправьте менеджеру.</li>
+          </ol>
+          <div class="actions-inline">
+            <a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Менеджер в Telegram</a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Card 2: Console -->
+      <div class="card-group">
+        <div class="card-head"><h2 class="card-head__title">Через консоль браузера</h2><a class="head-tag" href="mobile2.html">Инструкция для мобильной версии<img class="head-tag__icon" src="image/Logo-Android.svg" alt="Android" /><img class="head-tag__icon" src="image/Logo-iOS-white.svg" alt="iOS" /></a></div>
+        <article id="var2" class="card" tabindex="-1">
+          <p class="card__desc">Получение ссылки через внутреннюю консоль браузера.</p>
+          <ol class="steps">
+            <li>
+              <b>Скопируйте код</b> для вставки в консоль, нажав кнопку ниже.
+              <div class="actions-grid">
+                <button class="btn" data-action="copy-console-plus-us">Plus · <img class="btn__icon btn__icon--flag" src="image/country/us.svg" alt="US" />US USD</button>
+                <button class="btn" data-action="copy-console-plus-tl">Plus · <img class="btn__icon btn__icon--flag" src="image/country/ph.svg" alt="PH" />TL PHP</button>
+                <button class="btn" data-action="copy-console-pro-us">Pro · <img class="btn__icon btn__icon--flag" src="image/country/us.svg" alt="US" />US USD</button>
+                <button class="btn" data-action="copy-console-pro-tl">Pro · <img class="btn__icon btn__icon--flag" src="image/country/ph.svg" alt="PH" />TL PHP</button>
+                <button class="btn" data-action="copy-console-custom"><span data-custom-label>Plus · выберите ниже</span></button>
+              </div>
+            </li>
+            <li>
+              <b>Откройте chatgpt.com</b> и выполните вход в свой аккаунт.
+              <div class="actions-inline">
+                <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть ChatGPT</a>
+              </div>
+            </li>
+            <li><b>Откройте консоль</b>: откройте DevTools:
+              <br />нажмите <b>F12</b>
+              <br />(или <b>Ctrl+Shift+I</b>) ➡️ вкладка <b>Console</b>.
+            </li>
+            <li>
+              <b>Разрешите вставку кода</b>: если появится предупреждение о защите от Self-XSS, вручную впишите в консоль:
+              <br /><code>allow pasting</code>
+              <br />и нажмите <b>Enter</b>. Это разрешит вставку кода в консоль.
+            </li>
+            <li>
+              <b>Вставьте код</b> в Console и нажмите Enter.
+              <br />В консоли появится ссылка
+              <br /><code>https://checkout.stripe.com/...</code>
+              <br />Скопируйте её и отправьте нам.
+              <div class="actions-inline">
+                <a class="btn btn--secondary" href="https://oplata.info/info/" target="_blank" rel="noopener">Чат с нами на Plati.Market <br />(последний заказ с Fursov)</a>
+                <a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Менеджер в Telegram</a>
+              </div>
+            </li>
+          </ol>
+          <p class="note">Если вместо Stripe‑ссылки появляется <code>https://chatgpt.com/checkout/...</code>, значит включён новый метод оплаты. В любом случае отправьте нам эту ссылку.</p>
+        </article>
+      </div>
+
+      <!-- Card 3: API session -->
+      <div class="card-group">
+        <div class="card-head card-head--center"><h2 class="card-head__title">Копирование ссылки (по API)</h2><span class="badge badge--blue">CDK метод</span></div>
+        <article id="var3" class="card" tabindex="-1">
+          <p class="card__desc">Получение API‑ответа для дальнейшей покупки подписки менеджером.</p>
+          <ol class="steps">
+            <li><b>Откройте chatgpt.com</b> и выполните вход в свой аккаунт.</li>
+            <li>
+              Нажмите кнопку ниже, для открытия <code>chatgpt.com/api/auth/session</code>.
+              <div class="actions-inline">
+                <a class="btn btn--chatgpt btn--icon-lg" href="https://chatgpt.com/api/auth/session" target="_blank" rel="noopener"><img class="btn__icon" src="image/Logo-ChatGPT-white.svg" alt="ChatGPT" />Открыть страницу API ответа</a>
+              </div>
+            </li>
+            <li>
+              <b>Скопируйте весь длинный текст</b> на странице:
+              <br />Нажмите <b>Ctrl + A</b> — выделить всё;
+              <br />затем <b>Ctrl + C</b> — скопировать.
+            </li>
+            <li><b>Отправьте скопированный текст</b> менеджеру как есть, без изменений.</li>
+          </ol>
+          <div class="actions-inline">
+            <a class="btn btn--secondary" href="https://t.me/fursovtech" target="_blank" rel="noopener">Менеджер в Telegram</a>
+          </div>
+        </article>
+      </div>
+
+    </section>
+
+    <!-- Country selector — under cards -->
+    <section class="selector-bar" aria-label="Выбор плана, страны и валюты">
+      <label class="selector-bar__label">
+        <img src="image/Icon-card-payment-white.svg" alt="" width="16" height="16" />
+        Параметры кода
+      </label>
+      <div class="selector-bar__wrap">
+        <div class="selector-bar__row">
+          <div class="selector-bar__field">
+            <label class="selector-bar__field-label" for="planSelect">План</label>
+            <select id="planSelect" class="country-select" aria-label="Выберите план">
+              <option value="plus">Plus</option>
+              <option value="pro">Pro</option>
+            </select>
+          </div>
+          <div class="selector-bar__field">
+            <label class="selector-bar__field-label" for="countrySelect">Страна</label>
+            <select id="countrySelect" class="country-select" aria-label="Выберите страну">
+              <option value="">— выберите страну —</option>
+            </select>
+          </div>
+          <div class="selector-bar__field">
+            <label class="selector-bar__field-label" for="currencySelect">Валюта</label>
+            <select id="currencySelect" class="country-select" aria-label="Выберите валюту">
+              <option value="USD">USD — Доллар США</option>
+            </select>
+          </div>
+          <button class="btn btn--secondary" id="applySelector" type="button">Применить</button>
+        </div>
+        <p class="selector-bar__hint">Страна автоматически подставляет валюту, но валюту можно изменить отдельно. Обновляет пятую кнопку во всех способах выше.</p>
+      </div>
+    </section>
+
   </main>
 
-
   <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
-
 
   <script type="module" src="app.js"></script>
 </body>
