@@ -132,16 +132,29 @@ function getCountryByCode(code) {
   return countriesData.find(c => c.code === upper || c.openai_code === upper) ?? null;
 }
 
-// — URL parameter ?c=XX —
+// — URL parameters ?c=XX&cur=XX —
 
 function readURLCountry() {
   return new URLSearchParams(location.search).get('c') || null;
 }
 
-function updateURLParam(code) {
+function readURLCurrency() {
+  return new URLSearchParams(location.search).get('cur') || null;
+}
+
+function readURLPlan() {
+  const v = new URLSearchParams(location.search).get('plan');
+  return (v === 'plus' || v === 'pro') ? v : null;
+}
+
+function updateURLParam(code, currency, plan) {
   const url = new URL(location.href);
   if (code) url.searchParams.set('c', code);
   else url.searchParams.delete('c');
+  if (currency) url.searchParams.set('cur', currency);
+  else url.searchParams.delete('cur');
+  if (plan) url.searchParams.set('plan', plan);
+  else url.searchParams.delete('plan');
   history.replaceState(null, '', url.toString());
 }
 
@@ -297,26 +310,38 @@ function initCountrySelect() {
     applyBtn.addEventListener('click', () => {
       const entry    = getCountryByCode(countrySelect?.value ?? '');
       const currency = currencySelect?.value || 'USD';
+      const plan     = planSelect?.value || 'plus';
       if (entry) {
         billingCustom = billingFromCountry(entry, currency);
       } else {
         billingCustom = { country: 'US', currency, label: `US ${currency}` };
       }
       refreshAllButtons();
-      if (entry) updateURLParam(entry.code);
+      if (entry) updateURLParam(entry.code, currency, plan);
+      else updateURLParam(null, currency, plan);
       toast(`Применено: ${billingCustom.label}`);
     });
   }
 
-  const urlCode = readURLCountry();
+  const urlCode     = readURLCountry();
+  const urlCurrency = readURLCurrency();
+  const urlPlan     = readURLPlan();
+  if (urlPlan && planSelect) planSelect.value = urlPlan;
   if (urlCode) {
-    const entry = getCountryByCode(urlCode);
+    const entry    = getCountryByCode(urlCode);
+    const currency = urlCurrency || entry?.currency;
     if (entry) {
       if (countrySelect)  countrySelect.value  = entry.code;
-      if (currencySelect) currencySelect.value = entry.currency;
-      billingCustom = billingFromCountry(entry);
+      if (currencySelect && currency) currencySelect.value = currency;
+      billingCustom = billingFromCountry(entry, currency);
       refreshAllButtons();
     }
+  } else if (urlCurrency) {
+    if (currencySelect) currencySelect.value = urlCurrency;
+    billingCustom = { country: 'US', currency: urlCurrency, label: `US ${urlCurrency}` };
+    refreshAllButtons();
+  } else if (urlPlan) {
+    refreshAllButtons();
   }
 }
 
