@@ -1,4 +1,4 @@
-// App (ESM): country selector, clipboard, toasts, hash/query routing, bookmarklets
+﻿// App (ESM): country selector, clipboard, toasts, hash/query routing, bookmarklets
 import { createConsoleCode, createBookmarklet } from './payment-codes.js';
 
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -49,9 +49,11 @@ const PRO_PLANS  = ['chatgptpro', 'chatgptproplan'];
 
 const DEFAULT_US  = { country: 'US', currency: 'USD', label: 'US USD' };
 const DEFAULT_TL  = { country: 'TL', currency: 'PHP', label: 'TL PHP' };
+const DEFAULT_JP  = { country: 'JP', currency: 'PHP', label: 'JP PHP' };
 
 let billingUS     = { ...DEFAULT_US };
 let billingAlt    = { ...DEFAULT_TL };
+let billingAlt2   = { ...DEFAULT_JP };
 let billingCustom = { ...DEFAULT_US };
 
 function billingFromCountry(entry, currency) {
@@ -157,8 +159,10 @@ function refreshAllButtons() {
   const bookmarkMap = [
     ['[data-bookmarklet-plus-us]', createBookmarklet(PLUS_PLANS, billingUS)],
     ['[data-bookmarklet-plus-tl]', createBookmarklet(PLUS_PLANS, billingAlt)],
+    ['[data-bookmarklet-plus-jp]', createBookmarklet(PLUS_PLANS, billingAlt2)],
     ['[data-bookmarklet-pro-us]',  createBookmarklet(PRO_PLANS,  billingUS)],
     ['[data-bookmarklet-pro-tl]',  createBookmarklet(PRO_PLANS,  billingAlt)],
+    ['[data-bookmarklet-pro-jp]',  createBookmarklet(PRO_PLANS,  billingAlt2)],
     ['[data-bookmarklet-custom]',  createBookmarklet(plans,      billingCustom)],
   ];
   bookmarkMap.forEach(([sel, href]) => {
@@ -194,6 +198,10 @@ function onClick(e) {
       writeClipboard(createBookmarklet(PLUS_PLANS, billingAlt))
         .then(ok => toast(ok ? `Закладка Plus · TL PHP скопирована` : 'Не удалось скопировать'));
       break;
+    case 'copy-bookmarklet-plus-jp':
+      writeClipboard(createBookmarklet(PLUS_PLANS, billingAlt2))
+        .then(ok => toast(ok ? `Закладка Plus · JP PHP скопирована` : 'Не удалось скопировать'));
+      break;
     case 'copy-bookmarklet-pro-us':
       writeClipboard(createBookmarklet(PRO_PLANS, billingUS))
         .then(ok => toast(ok ? `Закладка Pro · US USD скопирована` : 'Не удалось скопировать'));
@@ -201,6 +209,10 @@ function onClick(e) {
     case 'copy-bookmarklet-pro-tl':
       writeClipboard(createBookmarklet(PRO_PLANS, billingAlt))
         .then(ok => toast(ok ? `Закладка Pro · TL PHP скопирована` : 'Не удалось скопировать'));
+      break;
+    case 'copy-bookmarklet-pro-jp':
+      writeClipboard(createBookmarklet(PRO_PLANS, billingAlt2))
+        .then(ok => toast(ok ? `Закладка Pro · JP PHP скопирована` : 'Не удалось скопировать'));
       break;
     case 'copy-bookmarklet-custom':
       writeClipboard(createBookmarklet(plans, billingCustom))
@@ -214,6 +226,10 @@ function onClick(e) {
       writeClipboard(createConsoleCode(PLUS_PLANS, billingAlt))
         .then(ok => toast(ok ? `Код консоли Plus · TL PHP скопирован` : 'Не удалось скопировать'));
       break;
+    case 'copy-console-plus-jp':
+      writeClipboard(createConsoleCode(PLUS_PLANS, billingAlt2))
+        .then(ok => toast(ok ? `Код консоли Plus · JP PHP скопирован` : 'Не удалось скопировать'));
+      break;
     case 'copy-console-pro-us':
       writeClipboard(createConsoleCode(PRO_PLANS, billingUS))
         .then(ok => toast(ok ? `Код консоли Pro · US USD скопирован` : 'Не удалось скопировать'));
@@ -221,6 +237,10 @@ function onClick(e) {
     case 'copy-console-pro-tl':
       writeClipboard(createConsoleCode(PRO_PLANS, billingAlt))
         .then(ok => toast(ok ? `Код консоли Pro · TL PHP скопирован` : 'Не удалось скопировать'));
+      break;
+    case 'copy-console-pro-jp':
+      writeClipboard(createConsoleCode(PRO_PLANS, billingAlt2))
+        .then(ok => toast(ok ? `Код консоли Pro · JP PHP скопирован` : 'Не удалось скопировать'));
       break;
     case 'copy-console-custom':
       writeClipboard(createConsoleCode(plans, billingCustom))

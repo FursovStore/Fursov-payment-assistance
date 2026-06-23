@@ -653,6 +653,8 @@
                 </div>
               </div>
 
+
+
               <div class="guide-step">
                 <div class="guide-step__header">
                   <span class="guide-step__number">13</span>
@@ -660,11 +662,42 @@
                     Выполните вставку кода для требуемого плана ChatGPT (Plus или Pro) — после вставки нажмите Enter на клавиатуре
                   </div>
                 </div>
-                <div class="guide-step__actions">
-                  <button class="btn" data-action="copy-console-plus-us" title="Скопировать код консоли Plus (US USD)">Код консоли на Plus план · <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</button>
-                  <button class="btn" data-action="copy-console-plus-tl" title="Скопировать код консоли Plus (PH PHP)">Код консоли на Plus план · <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</button>
-                  <button class="btn" data-action="copy-console-pro-us" title="Скопировать код консоли Pro (US USD)">Код консоли на Pro план · <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</button>
-                  <button class="btn" data-action="copy-console-pro-tl" title="Скопировать код консоли Pro (PH PHP)">Код консоли на Pro план · <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</button>
+                <div class="actions-grid">
+                  <button class="btn" data-action="copy-console-plus-us" title="Скопировать код консоли Plus (US USD)">Код на Plus <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</button>
+                  <button class="btn" data-action="copy-console-pro-us" title="Скопировать код консоли Pro (US USD)">Код на Pro <img class="btn__icon" src="image/country/us.svg" alt="US" />US USD</button>
+                  <button class="btn" data-action="copy-console-plus-tl" title="Скопировать код консоли Plus (PH PHP)">Код на Plus <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</button>
+                  <button class="btn" data-action="copy-console-pro-tl" title="Скопировать код консоли Pro (PH PHP)">Код на Pro <img class="btn__icon" src="image/country/ph.svg" alt="PH" />PH PHP</button>
+                  <button class="btn" data-action="copy-console-plus-jp" title="Скопировать код консоли Plus (JP PHP)">Код на Plus <img class="btn__icon" src="image/country/jp.svg" alt="JP" />JP PHP</button>
+                  <button class="btn" data-action="copy-console-pro-jp" title="Скопировать код консоли Pro (JP PHP)">Код на Pro <img class="btn__icon" src="image/country/jp.svg" alt="JP" />JP PHP</button>
+                  <button class="btn" data-action="copy-console-custom" title="Скопировать код консоли (Кастомный выбор)"><span data-custom-label>Код консоли · выберите ниже</span></button>
+                
+                
+                  <div class="guide-step__text" style="grid-column: 1 / -1; text-align: center;">
+                    Выберите план и страну для кастомного кода (опционально):
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: var(--space-12); margin-top: var(--space-8);">
+                  <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                    <label class="selector-bar__field-label" for="planSelect">План</label>
+                    <select id="planSelect" class="country-select" aria-label="Выберите план">
+                      <option value="plus">Plus</option>
+                      <option value="pro">Pro</option>
+                    </select>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                    <label class="selector-bar__field-label" for="countrySelect">Страна</label>
+                    <select id="countrySelect" class="country-select" aria-label="Выберите страну">
+                      <option value="">— выберите страну —</option>
+                    </select>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                    <label class="selector-bar__field-label" for="currencySelect">Валюта</label>
+                    <select id="currencySelect" class="country-select" aria-label="Выберите валюту">
+                      <option value="USD">USD — Доллар США</option>
+                    </select>
+                  </div>
+                   <button class="btn btn--secondary" id="applySelector" type="button" style="margin-top: var(--space-4);">Применить</button>
+                
                 </div>
                 <div class="guide-step__image">
                   <img class="img-thumb" src="image/image_mobile_android/13-paste-code-console.jpg" alt="Вставка кода в консоль" data-full="image/image_mobile_android/13-paste-code-console.jpg" />
@@ -872,3 +905,4 @@
   </script>
 </body>
 </html>
+

@@ -791,7 +791,7 @@ a {
   justify-items: center;
 }
 
-.actions-grid .btn:nth-child(5) {
+.actions-grid .btn:nth-child(7) {
   grid-column: 1 / -1;
 }
 
